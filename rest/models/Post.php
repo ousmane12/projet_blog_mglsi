@@ -126,7 +126,7 @@
             foreach ($this->categories as $c => $value) {
                 $req = 'SELECT a.id, a.titre, a.contenu, a.dateCreation, a.dateModification, a.auteur, a.categorie, c.libelle as category_name
                 FROM '.$this->table.' a inner join categorie c on a.categorie = c.id where c.libelle = "'. $c .'"';
-                $stmt = $this->conn->prepare($req); 
+                $stmt = $this->conn->prepare($req);
                 $stmt->execute();
                 $result = $stmt->fetchall(PDO::FETCH_ASSOC);
                 array_push($this->categories[$c],$result);
