@@ -14,7 +14,7 @@
         public $dateCreation;
         public $dateModification;
         public $auteur;
-
+        public $categories;
        
         //Constructor Db
         public function __construct($db){
@@ -109,27 +109,31 @@
         }
 
         //read by category using all categories
-        public function read_all_by_cat(){
-            $req = 'SELECT c.libelle as category_name FROM categorie c';
-
-            //prepare statement 
+        public function regroupCategories()
+        {
+            $req = 'SELECT distinct(libelle) FROM categorie';
             $stmt = $this->conn->prepare($req);
 
             $stmt->execute();
-            $rows = $stmt->fetchall(PDO::FETCH_ASSOC);
-
-             //Set properties
-             $tab = array();
-            foreach ($rows as $row) {
-                $this->libelle = $row['category_name'];
-                $query = 'SELECT a.id, a.titre, a.contenu, a.dateCreation, a.dateModification, a.auteur, a.categorie, c.libelle as category_name
-                FROM '.$this->table.' a inner join categorie c on a.categorie = c.id where c.libelle = "'.$this->libelle.'"';
-                $stm = $this->conn->prepare($query);
-                $stm->execute();
-                array_push($tab, $stm);
+            $result = $stmt->fetchall(PDO::FETCH_ASSOC);
+            foreach ($result as $libelle => $value) {
+                $this->categories[$value['libelle']] = array();
             }
-            //echo $tab;
-            return $tab ;
+            return $this->categories;
+
+        }
+        public function regroupArticles(){
+            foreach ($this->categories as $c => $value) {
+                $req = 'SELECT a.id, a.titre, a.contenu, a.dateCreation, a.dateModification, a.auteur, a.categorie, c.libelle as category_name
+                FROM '.$this->table.' a inner join categorie c on a.categorie = c.id where c.libelle = "'. $c .'"';
+                $stmt = $this->conn->prepare($req);
+                $stmt->execute();
+                $result = $stmt->fetchall(PDO::FETCH_ASSOC);
+                array_push($this->categories[$c],$result);
+            }
+            
+            return $this->categories;
+           
         }
     }
     
