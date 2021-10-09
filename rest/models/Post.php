@@ -4,6 +4,7 @@
         //DB variables
         private $conn; 
         private $table = 'article';
+        public $format;
 
         // Properties
         public $id;
@@ -51,7 +52,7 @@
         }
 
         //get single post
-        public function read_single(){
+        public function read_single($id){
             $query = 'SELECT c.libelle as category_name,
             p.id,
             p.titre,
@@ -63,14 +64,14 @@
             ' . $this->table . ' p 
             LEFT JOIN categorie c on p.categorie = c.id
             WHERE 
-             p.id = ?
+             p.id = '.$id.'
             LIMIT 0,1';
 
              //prepare statement 
              $stmt = $this->conn->prepare($query);
 
              //BIND the ID
-             $stmt->bindParam(1, $this->id);
+             //$stmt->bindParam(1, $this->id);
              //Execute it 
              $stmt->execute();
              $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -107,7 +108,6 @@
              return $stmt;
         
         }
-
         //read by category using all categories
         public function regroupCategories()
         {
@@ -135,5 +135,48 @@
             return $this->categories;
            
         }
+
+        public function xml_encode($mixed, $domElement=null, $DOMDocument=null) {
+            if (is_null($DOMDocument)) {
+                $DOMDocument =new DOMDocument;
+                $DOMDocument->formatOutput = true;
+                $this->xml_encode($mixed, $DOMDocument, $DOMDocument);
+                echo $DOMDocument->saveXML();
+            }
+            else {
+                if (is_array($mixed)) {
+                    foreach ($mixed as $index => $mixedElement) {
+                        if (is_int($index)) {
+                            if ($index === 0) {
+                                $node = $domElement;
+                            }
+                            else {
+                                $node = $DOMDocument->createElement($domElement->tagName);
+                                $domElement->parentNode->appendChild($node);
+                            }
+                        }
+                        else {
+                            $plural = $DOMDocument->createElement($index);
+                            $domElement->appendChild($plural);
+                            $node = $plural;
+                            if (!(rtrim($index, 's') === $index)) {
+                                $singular = $DOMDocument->createElement(rtrim($index, 's'));
+                                $plural->appendChild($singular);
+                                $node = $singular;
+                            }
+                        }
+         
+                        $this->xml_encode($mixedElement, $node, $DOMDocument);
+                    }
+                }
+                else {
+                    $domElement->appendChild($DOMDocument->createTextNode($mixed));
+                }
+            }
+        }
+
+        
     }
+
+
     
