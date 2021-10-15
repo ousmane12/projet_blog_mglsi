@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<definitions
+    xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns="http://schemas.xmlsoap.org/wsdl/"
+    targetNamespace="urn:UsersManagementServicewsdl"
+    xmlns:tns="urn:UsersManagementServicewsdl"
+
+>
+
+    <types>
+        <xsd:schema targetNamespace="urn:UsersManagementServicewsdl">
+            <xsd:import namespace="http://schemas.xmlsoap.org/soap/encoding/"/>
+            <xsd:import namespace="http://schemas.xmlsoap.org/wsdl/" />
+
+            <xsd:complexType name="User">
+                <xsd:all>
+                    <!-- <xsd:element name="id" type="xsd:int"/> -->
+                    <xsd:element name="nom" type="xsd:string"/>
+                    <xsd:element name="prenom" type="xsd:string"/>
+                    <xsd:element name="username" type="xsd:string"/>
+                    <xsd:element name="password" type="xsd:string"/>
+                    <xsd:element name="email" type="xsd:string"/>
+                    <!-- <xsd:element name="token" type="xsd:string"/> -->
+                    <xsd:element name="role" type="xsd:string"/>
+                </xsd:all>
+            </xsd:complexType>
+
+            <xsd:complexType name="listUsers">
+                <xsd:complexContent>
+                    <xsd:restriction base="SOAP-ENC:Array">
+                        <xsd:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="tns:User[]" />
+                    </xsd:restriction>
+                </xsd:complexContent>
+            </xsd:complexType>
+        </xsd:schema>
+    </types>
+
+    <message name="getUserByIdRequest">
+        <part name="id" type="xsd:string" />
+    </message>
+    <message name="getUserByIdResponse">
+        <part name="returnUser" type="tns:User" />
+    </message>
+
+    <message name="getUserByEmailRequest">
+        <part name="email" type="xsd:string" />
+    </message>
+    <message name="getUserByEmailResponse">
+        <part name="returnUser" type="tns:User" />
+    </message>
+
+    <message name="getAllUserListRequest">
+    </message>
+    <message name="getAllUserListResponse">
+        <part name="returnUser" type="tns:listUsers" />
+    </message>
+    <message name="addUserRequest">
+        <!-- <part name="id" type="xsd:string" /> -->
+        <part name="nom" type="xsd:string" />
+        <part name="prenom" type="xsd:string" />
+        <part name="username" type="xsd:string" />
+        <part name="password" type="xsd:string" />
+        <part name="email" type="xsd:string" />
+        <!-- <part name="token" type="xsd:string" /> -->
+        <part name="role" type="xsd:string" />
+    </message>
+    <message name="addUserInfoResponse">
+        <part name="return" type="tns:User" />
+    </message>
+
+    <message name="removeUserRequest">
+        <part name="id" type="xsd:string" />
+    </message>
+    <message name="removeUserResponse">
+        <part name="return" type="xsd:string" />
+    </message>
+
+    <message name="updateUserRequest">
+        <part name="id" type="xsd:string" />
+        <part name="nom" type="xsd:string" />
+        <part name="prenom" type="xsd:string" />
+        <part name="username" type="xsd:string" />
+        <!-- <part name="password" type="xsd:string" /> -->
+        <part name="email" type="xsd:string" />
+        <!-- <part name="token" type="xsd:string" /> -->
+        <part name="role" type="xsd:string" />
+    </message>
+    <message name="updateUserResponse">
+        <part name="returnStatus" type="xsd:string" />
+    </message>
+
+    <portType name="serviceUsersManagerPortType">
+        <operation name="getUserById">
+            <documentation>Renvoie un utilisateur par son id</documentation>
+            <input message="tns:getUserByIdRequest"/>
+            <output message="tns:getUserByIdResponse"/>
+        </operation>
+        <operation name="getUserByEmail">
+            <documentation>Renvoie un utilisateur par son email</documentation>
+            <input message="tns:getUserByEmailRequest"/>
+            <output message="tns:getUserByEmailResponse"/>
+        </operation>
+        <operation name="getAllUserList">
+            <documentation>Renvoie la liste de tous les utilisateurs</documentation>
+            <input message="tns:getAllUserListRequest"/>
+            <output message="tns:getAllUserListResponse"/>
+        </operation>
+          <operation name="addUser">
+            <documentation>Ajout d'un nouvel utilisateur</documentation>
+            <input message="tns:addUserRequest"/>
+            <output message="tns:addUserInfoResponse"/>
+        </operation>
+          <operation name="removeUser">
+            <documentation>Suppression d'un utilisateur</documentation>
+            <input message="tns:removeUserRequest"/>
+            <output message="tns:removeUserResponse"/>
+        </operation>
+         <operation name="updateUser">
+            <documentation>Mise à jour des informations d'un utilisateur</documentation>
+            <input message="tns:updateUserRequest"/>
+            <output message="tns:updateUserResponse"/>
+        </operation>
+    </portType>
+    <binding name="serviceUsersBinding" type="tns:serviceUsersManagerPortType">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="getUserById">
+            <soap:operation soapAction="urn:UsersManagementServicewsdl#getUserByIdServeur" tyle="rpc"/>
+            <input>
+                <soap:body use="encoded" namespace="urn:UsersManagementServicewsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body use="encoded" namespace="urn:UsersManagementServicewsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+        <operation name="getUserByEmail">
+            <soap:operation soapAction="urn:UsersManagementServicewsdl#getUserByEmailServeur" tyle="rpc"/>
+            <input>
+                <soap:body use="encoded" namespace="urn:UsersManagementServicewsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body use="encoded" namespace="urn:UsersManagementServicewsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+        <operation name="getAllUserList">
+            <soap:operation soapAction="urn:UsersManagementServicewsdl#getAllUsersListServeur" tyle="rpc"/>
+            <input>
+                <soap:body use="encoded" namespace="urn:UsersManagementServicewsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body use="encoded" namespace="urn:UsersManagementServicewsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+        <operation name="addUser">
+            <soap:operation soapAction="urn:UsersManagementServicewsdl#addUserServeur" tyle="rpc"/>
+            <input>
+                <soap:body use="encoded" namespace="urn:UsersManagementServicewsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body use="encoded" namespace="urn:UsersManagementServicewsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+          <operation name="removeUser">
+            <soap:operation soapAction="urn:UsersManagementServicewsdl#removeUserServeur" tyle="rpc"/>
+            <input>
+                <soap:body use="encoded" namespace="urn:UsersManagementServicewsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body use="encoded" namespace="urn:UsersManagementServicewsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+         <operation name="updateUser">
+            <soap:operation soapAction="urn:UsersManagementServicewsdl#updateUserServeur" tyle="rpc"/>
+            <input>
+                <soap:body use="encoded" namespace="urn:UsersManagementServicewsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body use="encoded" namespace="urn:UsersManagementServicewsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+    </binding>
+
+    <service name="serviceUsers">
+        <port name="serviceUsersPort" binding="tns:serviceUsersBinding">
+            <soap:address location="http://localhost/projet_blog_mglsi/soapService/service/UserController.php"/>
+        </port>
+
+    </service>
+</definitions>

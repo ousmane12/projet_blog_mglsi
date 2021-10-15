@@ -4,6 +4,10 @@
         //DB variables
         private $conn; 
         private $table = 'article';
+<<<<<<< HEAD
+=======
+        public $format;
+>>>>>>> afafeb1223a0ae3a8bb012af7a1d2a5508be8985
 
         // Properties
         public $id;
@@ -51,7 +55,11 @@
         }
 
         //get single post
+<<<<<<< HEAD
         public function read_single(){
+=======
+        public function read_single($id){
+>>>>>>> afafeb1223a0ae3a8bb012af7a1d2a5508be8985
             $query = 'SELECT c.libelle as category_name,
             p.id,
             p.titre,
@@ -63,14 +71,22 @@
             ' . $this->table . ' p 
             LEFT JOIN categorie c on p.categorie = c.id
             WHERE 
+<<<<<<< HEAD
              p.id = ?
+=======
+             p.id = '.$id.'
+>>>>>>> afafeb1223a0ae3a8bb012af7a1d2a5508be8985
             LIMIT 0,1';
 
              //prepare statement 
              $stmt = $this->conn->prepare($query);
 
              //BIND the ID
+<<<<<<< HEAD
              $stmt->bindParam(1, $this->id);
+=======
+             //$stmt->bindParam(1, $this->id);
+>>>>>>> afafeb1223a0ae3a8bb012af7a1d2a5508be8985
              //Execute it 
              $stmt->execute();
              $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -107,7 +123,10 @@
              return $stmt;
         
         }
+<<<<<<< HEAD
 
+=======
+>>>>>>> afafeb1223a0ae3a8bb012af7a1d2a5508be8985
         //read by category using all categories
         public function regroupCategories()
         {
@@ -135,5 +154,52 @@
             return $this->categories;
            
         }
+<<<<<<< HEAD
     }
+=======
+
+        public function xml_encode($mixed, $domElement=null, $DOMDocument=null) {
+            if (is_null($DOMDocument)) {
+                $DOMDocument =new DOMDocument;
+                $DOMDocument->formatOutput = true;
+                $this->xml_encode($mixed, $DOMDocument, $DOMDocument);
+                echo $DOMDocument->saveXML();
+            }
+            else {
+                if (is_array($mixed)) {
+                    foreach ($mixed as $index => $mixedElement) {
+                        if (is_int($index)) {
+                            if ($index === 0) {
+                                $node = $domElement;
+                            }
+                            else {
+                                $node = $DOMDocument->createElement($domElement->tagName);
+                                $domElement->parentNode->appendChild($node);
+                            }
+                        }
+                        else {
+                            $plural = $DOMDocument->createElement($index);
+                            $domElement->appendChild($plural);
+                            $node = $plural;
+                            if (!(rtrim($index, 's') === $index)) {
+                                $singular = $DOMDocument->createElement(rtrim($index, 's'));
+                                $plural->appendChild($singular);
+                                $node = $singular;
+                            }
+                        }
+         
+                        $this->xml_encode($mixedElement, $node, $DOMDocument);
+                    }
+                }
+                else {
+                    $domElement->appendChild($DOMDocument->createTextNode($mixed));
+                }
+            }
+        }
+
+        
+    }
+
+
+>>>>>>> afafeb1223a0ae3a8bb012af7a1d2a5508be8985
     
