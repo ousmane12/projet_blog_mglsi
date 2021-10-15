@@ -149,7 +149,7 @@ class UserController{
             'password'   => md5(sha1(str_rot13($password)))
         ]);
         
-        return new User($request->fetch(PDO::FETCH_ASSOC));
+        count($request->fetchAll());
     }
 
 
