@@ -94,6 +94,14 @@
         <part name="returnStatus" type="xsd:string" />
     </message>
 
+    <message name="authenticateUserRequest">
+        <part name="username" type="xsd:string" />
+        <part name="password" type="xsd:string" />
+    </message>
+    <message name="authenticateUserResponse">
+        <part name="return" type="tns:User" />
+    </message>
+
     <portType name="serviceUsersManagerPortType">
         <operation name="getUserById">
             <documentation>Renvoie un utilisateur par son id</documentation>
@@ -124,6 +132,11 @@
             <documentation>Mise à jour des informations d'un utilisateur</documentation>
             <input message="tns:updateUserRequest"/>
             <output message="tns:updateUserResponse"/>
+        </operation>
+        <operation name="authenticateUser">
+            <documentation>Authentifier un utilisateur</documentation>
+            <input message="tns:authenticateUserRequest"/>
+            <output message="tns:authenticateUserResponse"/>
         </operation>
     </portType>
     <binding name="serviceUsersBinding" type="tns:serviceUsersManagerPortType">
@@ -175,6 +188,15 @@
         </operation>
          <operation name="updateUser">
             <soap:operation soapAction="urn:UsersManagementServicewsdl#updateUserServeur" tyle="rpc"/>
+            <input>
+                <soap:body use="encoded" namespace="urn:UsersManagementServicewsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </input>
+            <output>
+                <soap:body use="encoded" namespace="urn:UsersManagementServicewsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+            </output>
+        </operation>
+        <operation name="authenticateUser">
+            <soap:operation soapAction="urn:UsersManagementServicewsdl#authenticateUserServeur" tyle="rpc"/>
             <input>
                 <soap:body use="encoded" namespace="urn:UsersManagementServicewsdl" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
             </input>

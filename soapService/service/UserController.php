@@ -20,7 +20,7 @@ class UserController{
  */
     public function addUser($nom,$prenom,$username,$password,$email,$role)
     {
-        $bdd = new Database('localhost','3306', 'mglsi_news', 'root', '');
+        $bdd = new Database('localhost','3306', 'glsi_blog', 'root', '');
          $bdd->connect();
          
          $token = $this->generateRandomString();
@@ -61,7 +61,7 @@ class UserController{
 
     public function removeUser($id)
     {
-        $bdd = new Database('localhost','3306', 'mglsi_news', 'root', '');
+        $bdd = new Database('localhost','3306', 'glsi_blog', 'root', '');
         $bdd->connect();
          return $bdd->exec('DELETE FROM User WHERE id = '. $id);
     }
@@ -71,7 +71,7 @@ class UserController{
      */
     public function getAllUserList()
     {
-        $bdd = new Database('localhost','3306', 'mglsi_news', 'root', '');
+        $bdd = new Database('localhost','3306', 'glsi_blog', 'root', '');
          $bdd->connect();
         $users = array();
         
@@ -90,7 +90,7 @@ class UserController{
      */
     public function getUserById($id)
     {
-        $bdd = new Database('localhost','3306', 'mglsi_news', 'root', '');
+        $bdd = new Database('localhost','3306', 'glsi_blog', 'root', '');
         $bdd->connect();
         $id = (int) $id;
 
@@ -106,7 +106,7 @@ class UserController{
      */
     public function getUserByEmail($email)
     {
-        $bdd = new Database('localhost','3306', 'mglsi_news', 'root', '');
+        $bdd = new Database('localhost','3306', 'glsi_blog', 'root', '');
         $bdd->connect();
         $request = $bdd->query('SELECT * FROM user WHERE email = '.$email);
         $data = $request->fetch(PDO::FETCH_ASSOC);
@@ -120,7 +120,7 @@ class UserController{
 
     public function updateUser($id,$nom,$prenom,$username,$password,$email,$role)
     {
-        $bdd = new Database('localhost','3306', 'mglsi_news', 'root', '');
+        $bdd = new Database('localhost','3306', 'glsi_blog', 'root', '');
         $bdd->connect();
 
         $id = (int) $id;
@@ -136,6 +136,20 @@ class UserController{
             'role' => $role,
             'id' => $id
         ]);
+    }
+
+    public function authenticateUser($useranme, $password)
+    {
+        $bdd = new Database('localhost','3306', 'glsi_blog', 'root', '');
+        $bdd->connect();
+
+        $request = $bdd->prepare('SELECT * FROM user WHERE username = :username and password = :password');
+        $request->execute([
+            'username' => $useranme,
+            'password'   => md5(sha1(str_rot13($password)))
+        ]);
+        
+        return new User($request->fetch(PDO::FETCH_ASSOC));
     }
 
 

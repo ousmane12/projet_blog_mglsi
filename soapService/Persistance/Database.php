@@ -2,6 +2,7 @@
 class Database extends PDO{
     // DB Params
     private $dbhost = 'localhost';
+    // private $dbname = 'mglsi_news';
     private $dbname = 'glsi_blog';
     private $dbport = '';
     private $dbuser = 'root';
