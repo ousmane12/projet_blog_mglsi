@@ -118,20 +118,23 @@ class UserController{
      * update user info
      */
 
-    public function updateUser($id,$nom,$prenom,$username,$email,$role)
+    public function updateUser($id,$nom,$prenom,$username,$password,$email,$role)
     {
         $bdd = new Database('localhost','3306', 'mglsi_news', 'root', '');
         $bdd->connect();
+
+        $id = (int) $id;
         $request = $bdd ->prepare('UPDATE user SET nom = :nom, prenom = :prenom, username =:username,
-                         email = :email, role = :role WHERE id = $id');
+                         email = :email, password =:password, role =:role WHERE id = :id');
 
         return $request->execute([
-            'id'    => $id,
             'nom'    => $nom,
             'prenom' => $prenom,
-            'email'   => $email,
             'username'   => $username,
+            'email'   => $email,
+            'password'   => md5(sha1(str_rot13($password))),
             'role' => $role,
+            'id' => $id
         ]);
     }
 

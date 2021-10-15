@@ -85,7 +85,7 @@
         <part name="nom" type="xsd:string" />
         <part name="prenom" type="xsd:string" />
         <part name="username" type="xsd:string" />
-        <!-- <part name="password" type="xsd:string" /> -->
+        <part name="password" type="xsd:string" />
         <part name="email" type="xsd:string" />
         <!-- <part name="token" type="xsd:string" /> -->
         <part name="role" type="xsd:string" />
