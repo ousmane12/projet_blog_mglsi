@@ -2,12 +2,14 @@
   class Posts extends Controller {
     public function __construct(){
         if(!isLoggedIn()){
-            redirect('pages/index');
+            redirect('pages/');
             $this->postModel = $this->model('Post');
             //post add
           }
         $this->postModel = $this->model('Post'); 
       }
+
+      //extract article information when posted via the form
       public function add(){
         $categories = $this->postModel->getCategories();
         

@@ -50,7 +50,7 @@
           // Register User
           if(!($this->userModel->register($data))){
             flash('register_success', 'User registered and can log in');
-            redirect('users/register');
+            redirect('users/list');
           } else {
             die('Something went wrong');
           }
@@ -153,7 +153,7 @@
       $_SESSION['user_email'] = $user->email;
       $_SESSION['user_nom'] = $user->username;
       $_SESSION['user_status'] = $user->role;
-      redirect('pages/index');
+      redirect('pages');
     }
 
     public function logout(){
@@ -161,7 +161,7 @@
       unset($_SESSION['user_email']);
       unset($_SESSION['user_nom']);
       session_destroy();
-      redirect('pages/index');
+      redirect('pages');
     }
 
     public function isLoggedIn(){
@@ -238,12 +238,8 @@
           'token' => $user->token,
           
         ];
-
         //print_r($data);
         $this->view('users/register', $data);
-
-       
-        
       }
 
     }

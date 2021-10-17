@@ -1,14 +1,25 @@
 <?php
+
+    /**
+     * @OA\Info(
+     *   title="My first API",
+     *   version="1.0.0",
+     *   @OA\Contact(
+     *     email="support@example.com"
+     *   )
+     * )
+     */
+
+     
+
     class Post
     {
         //DB variables
         private $conn; 
         private $table = 'article';
-<<<<<<< HEAD
-=======
-        public $format;
->>>>>>> afafeb1223a0ae3a8bb012af7a1d2a5508be8985
 
+
+        public $format;
         // Properties
         public $id;
         public $titre;
@@ -24,6 +35,14 @@
         public function __construct($db){
             $this->conn = $db; 
         }
+
+        /**  @OA\Get(
+            *     path="/public/index?action={articles}&{type}", tags ={"article"}
+            *     @OA\Response(response="200", description="success")
+            *     @OA\Response(response="404", description="Error")
+            *     @OA\Info (Liste tous les articles)
+            * )
+            */
         
         // Get posts
         public function read(){
@@ -55,11 +74,14 @@
         }
 
         //get single post
-<<<<<<< HEAD
-        public function read_single(){
-=======
+         /**  @OA\Get(
+            *     path="/public/index?action={article}&{id}&{type}", tags ={"public"}
+            *     @OA\Response(response="200", description="success")
+            *     @OA\Response(response="404", description="Error")
+            *     @OA\Info (lis un article selon son id)
+            * )
+            */
         public function read_single($id){
->>>>>>> afafeb1223a0ae3a8bb012af7a1d2a5508be8985
             $query = 'SELECT c.libelle as category_name,
             p.id,
             p.titre,
@@ -71,22 +93,14 @@
             ' . $this->table . ' p 
             LEFT JOIN categorie c on p.categorie = c.id
             WHERE 
-<<<<<<< HEAD
-             p.id = ?
-=======
+
              p.id = '.$id.'
->>>>>>> afafeb1223a0ae3a8bb012af7a1d2a5508be8985
             LIMIT 0,1';
 
              //prepare statement 
              $stmt = $this->conn->prepare($query);
 
-             //BIND the ID
-<<<<<<< HEAD
-             $stmt->bindParam(1, $this->id);
-=======
-             //$stmt->bindParam(1, $this->id);
->>>>>>> afafeb1223a0ae3a8bb012af7a1d2a5508be8985
+             
              //Execute it 
              $stmt->execute();
              $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -103,30 +117,38 @@
 
         
         //Read all post by category
-        public function read_by_cat(){
+         /**  @OA\Get(
+            *     path="/public/index?action={articlescategorie}&{type:xml/json}", tags ={"public"}
+            *     @OA\Response(response="200", description="success")
+            *     @OA\Response(response="404", description="Error")
+            *     @OA\Info read article by their categorie
+            * )
+            */
+        public function read_by_cat($libelle){
             //Query 
             $req = 'SELECT a.id, a.titre, a.contenu, a.dateCreation, a.dateModification, a.auteur, a.categorie, c.libelle as category_name
-            FROM '.$this->table.' a inner join categorie c on a.categorie = c.id where c.libelle = ?;
+            FROM '.$this->table.' a inner join categorie c on a.categorie = c.id where c.libelle = "'.$libelle.'";
             ';
 
             // prepare query
              //prepare statement 
              $stmt = $this->conn->prepare($req);
 
-             //BIND the ID
-             $stmt->bindParam(1, $this->libelle);
+            
              //Execute it 
              $stmt->execute();
              //prepare statement 
-             
-             
              return $stmt;
         
         }
-<<<<<<< HEAD
 
-=======
->>>>>>> afafeb1223a0ae3a8bb012af7a1d2a5508be8985
+        /**  @OA\Get(
+            *     path="/public/index?action=articlesByCategory&type={type:xml/json}", tags ={"article"}
+            *     @OA\Response(response="200", description="success")
+            *     @OA\Response(response="404", description="Error")
+            *     @OA\Info read all articles grouping them by their category
+            * )
+            */
         //read by category using all categories
         public function regroupCategories()
         {
@@ -141,6 +163,13 @@
             return $this->categories;
 
         }
+        /**  @OA\Get(
+            *     path="/public/index?action={articlesByCategory}&{type:xml/json}", tags ={"public"}
+            *     @OA\Response(response="200", description="success")
+            *     @OA\Response(response="404", description="Error")
+            *     @OA\Info read all articles grouping them by their category
+            * )
+            */
         public function regroupArticles(){
             foreach ($this->categories as $c => $value) {
                 $req = 'SELECT a.id, a.titre, a.contenu, a.dateCreation, a.dateModification, a.auteur, a.categorie, c.libelle as category_name
@@ -154,52 +183,5 @@
             return $this->categories;
            
         }
-<<<<<<< HEAD
     }
-=======
-
-        public function xml_encode($mixed, $domElement=null, $DOMDocument=null) {
-            if (is_null($DOMDocument)) {
-                $DOMDocument =new DOMDocument;
-                $DOMDocument->formatOutput = true;
-                $this->xml_encode($mixed, $DOMDocument, $DOMDocument);
-                echo $DOMDocument->saveXML();
-            }
-            else {
-                if (is_array($mixed)) {
-                    foreach ($mixed as $index => $mixedElement) {
-                        if (is_int($index)) {
-                            if ($index === 0) {
-                                $node = $domElement;
-                            }
-                            else {
-                                $node = $DOMDocument->createElement($domElement->tagName);
-                                $domElement->parentNode->appendChild($node);
-                            }
-                        }
-                        else {
-                            $plural = $DOMDocument->createElement($index);
-                            $domElement->appendChild($plural);
-                            $node = $plural;
-                            if (!(rtrim($index, 's') === $index)) {
-                                $singular = $DOMDocument->createElement(rtrim($index, 's'));
-                                $plural->appendChild($singular);
-                                $node = $singular;
-                            }
-                        }
-         
-                        $this->xml_encode($mixedElement, $node, $DOMDocument);
-                    }
-                }
-                else {
-                    $domElement->appendChild($DOMDocument->createTextNode($mixed));
-                }
-            }
-        }
-
-        
-    }
-
-
->>>>>>> afafeb1223a0ae3a8bb012af7a1d2a5508be8985
     

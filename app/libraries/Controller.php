@@ -18,6 +18,10 @@
             //check for the view file
             if(file_exists('../app/views/' .$view .'.php')){
                 require_once '../app/views/' .$view .'.php';
+            }elseif(file_exists('../rest/public/' .$view .'.php')){
+                require_once '../rest/public/' .$view .'.php';
+            }elseif(file_exists('../rest/documentation/' .$view .'.php')){
+                require_once '../rest/documentation/' .$view .'.php';
             }else{
                 //view doesnot exist
                 die('View does not exist');

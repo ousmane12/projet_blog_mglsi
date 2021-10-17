@@ -9,7 +9,7 @@
       <div class="card card-body bg-light mt-5">
         <h2>Edit A User</h2>
         <p>Please fill out this form to edit a user</p>
-        <form action="<?php echo URLROOT; ?>/users/register" method="post">
+        <form action="<?php echo URLROOT; ?>/users/edit/<?php echo $data['id']; ?>" method="post">
           <div class="form-group">
             <label for="nom">Name: <sup>*</sup></label>
             <input type="text" name="nom" class="form-control form-control-lg" value="<?php echo $data['nom']; ?>">
@@ -44,7 +44,7 @@
 
           <div class="row">
             <div class="col">
-              <input type="submit" value="Register" class="btn btn-success btn-block">
+              <input type="submit" value="Update" class="btn btn-success btn-block">
             </div>
           </div>
         </form>

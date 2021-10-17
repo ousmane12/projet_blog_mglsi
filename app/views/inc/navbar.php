@@ -67,17 +67,17 @@
           <li class="nav-item">
               <a class="btn btn-outline-danger" href="<?php echo URLROOT; ?>/categories/delete">Delete Category</a>
             </li>
-            <?php if( isset($_SESSION['user_status']) == 'admin')?>
+         
+          <?php elseif(isset($_SESSION['user_status']) == 'admin'):?>
             <li class="nav-item">
               <a class="btn btn-outline-info" href="<?php echo URLROOT; ?>/users/list">List Users</a>
             </li>
             <li class="nav-item">
               <a class="btn btn-outline-dark" href="<?php echo URLROOT; ?>/users/register">Ajouter Users</a>
             </li>
-            
-          <?php endif; ?>
-          
+            <?php endif; ?>
         </ul>
+        
       </div>
       
     </nav>

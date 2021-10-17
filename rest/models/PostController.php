@@ -1,11 +1,22 @@
 <?php
+
+    /**
+     * @OA\Info(
+     *   title="My first API",
+     *   version="1.0.0",
+     *   @OA\Contact(
+     *     email="support@example.com"
+     *   )
+     * )
+     */
     include_once '../config/Database.php';
     include_once 'Post.php';
     //header('Access-Control-Allow-Origin: *');
+    
     class PostController
     {
         //public $post;
-
+        
 
         public function __construct(){
             //$this->post = $post;
@@ -13,7 +24,14 @@
             $this->db = $this->database->connect();
             $this->post = new Post($this->db);
         }
-
+           /**
+         * @OA\Get(
+         *     path="/public/index?action={article}&{type}", tags ={"public"}
+         *     @OA\Response(response="200", description="success")
+         *     @OA\Response(response="404", description="Error")
+         *     @OA\Info 
+         * )
+         */
         function get($type){
             $dataType = $type != 'json' ? $type : 'json';
             //$post->libelle = isset($_GET['categorie']) ? $_GET['categorie'] : die();
@@ -50,7 +68,7 @@
             }else{
                 $res = $dataType == 'json' ? json_encode(array('Message'=>'No posts found')): $this->post->xml_encode(array('Message'=>'No posts found'));
                 //echo json_encode(array('Message'=>'No posts found'));
-                echo res;
+                echo $res;
             }
     
         }
@@ -59,7 +77,7 @@
             $dataType = $type != 'json' ? $type : 'json';
             $dataType == 'xml' ? header("Content-Type: application/xml; charset=UTF-8") : header("Content-Type: application/json; charset=UTF-8");
             $this->post->libelle = $categorie;
-            $results = $this->post->read_by_cat();
+            $results = $this->post->read_by_cat($categorie);
             $num = $results->rowCount();
             //Check if any post 
             if ($num > 0){
@@ -87,7 +105,7 @@
             }else{
                 $res = $dataType == 'json' ? json_encode(array('Message'=>'No posts found')): $this->post->xml_encode(array('Message'=>'No posts found'));
                 //echo json_encode(array('Message'=>'No posts found'));
-                echo res;
+                echo $res;
             }
         }
 
@@ -131,7 +149,7 @@
         }
         public function displayApiDocumentation()
         {
-        //header('Location: '.WEBROOT.'apidoc/index.html');
-        print_r('Hello');
+        header('Location: '.'public/documentation/index.html');
+        //print_r('Hello');
     }
     }

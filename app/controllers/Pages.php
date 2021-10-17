@@ -23,6 +23,8 @@
         $this->view('pages/index', $data);
     }
 
+   
+
     public function navbar(){
         //$posts = $this->postModel->getPost();
         $categories = $this->postModel->getCategories();

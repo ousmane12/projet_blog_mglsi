@@ -2,7 +2,7 @@
   class Categories extends Controller {
     public function __construct(){
         if(!isLoggedIn()){
-            redirect('pages/index');
+            redirect('pages');
             $this->categoryModel = $this->model('Category');
             //post add
           }
@@ -64,7 +64,7 @@
 
           //print_r($data);
           $id = $this->categoryModel->getCatByName($data['categories']);
-          print_r($id);
+          //print_r($id);
   
           // Validate data
           if(empty($data['libelle'])){

@@ -80,7 +80,6 @@
 
       public function updateUser($data){
         $this->db->query('UPDATE user SET nom = "'.$data['nom'].'", prenom = "'.$data['prenom'].'", username = "'.$data['username'].'", password = "'.$data['password'].'", token = "'.$data['token'].'", role = "'.$data['role'].'" WHERE id = '.$data['id'].'');
-        // Bind values
         // Execute
         if($this->db->execute()){
           return true;
