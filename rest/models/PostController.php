@@ -2,7 +2,7 @@
 
     /**
      * @OA\Info(
-     *   title="My first API",
+     *   title="GLSI news api",
      *   version="1.0.0",
      *   @OA\Contact(
      *     email="support@example.com"
@@ -11,7 +11,8 @@
      */
     include_once '../config/Database.php';
     include_once 'Post.php';
-    //header('Access-Control-Allow-Origin: *');
+    header('Access-Control-Allow-Origin: *');
+    
     
     class PostController
     {
@@ -55,7 +56,7 @@
                         'auteur' => $auteur
                     );
                     //Push to 'data'
-                    array_push($post_array['Article'], $post_item);
+                    array_push($post_array['Articles'], $post_item);
                 }
                 //turn into json
                 //$json = ;
@@ -63,10 +64,10 @@
                 //$xml = new SimpleXMLElement('<Article/>');
                 //$r = $post->to_xml($xml, $post_array);
     
-                $res = $dataType == 'json' ? json_encode($post_array): $this->post->xml_encode($post_array);
+                $res = $dataType == 'json' ? json_encode($post_array): $this->generate_valid_xml_from_array($post_array,  'article');
                 echo $res;
             }else{
-                $res = $dataType == 'json' ? json_encode(array('Message'=>'No posts found')): $this->post->xml_encode(array('Message'=>'No posts found'));
+                $res = $dataType == 'json' ? json_encode(array('Message'=>'No posts found')): $this->generate_xml_from_array(['message' => 'Aucun article trouvé !'], 'message');
                 //echo json_encode(array('Message'=>'No posts found'));
                 echo $res;
             }
@@ -96,14 +97,14 @@
                         'auteur' => $auteur
                     );
                     //Push to 'data'
-                    array_push($post_array['Article'], $post_item);
+                    array_push($post_array['Articles'], $post_item);
                 }
                 //turn into json
-                $res = $dataType == 'json' ? json_encode($post_array): $this->post->xml_encode($post_array);
+                $res = $dataType == 'json' ? json_encode($post_array): $this->generate_valid_xml_from_array($post_array,  'article');
                 echo $res;
                 //echo json_encode($post_array);
             }else{
-                $res = $dataType == 'json' ? json_encode(array('Message'=>'No posts found')): $this->post->xml_encode(array('Message'=>'No posts found'));
+                $res = $dataType == 'json' ? json_encode(array('Message'=>'No posts found')): $this->generate_xml_from_array(['message' => 'Aucun article trouvé !'], 'message');
                 //echo json_encode(array('Message'=>'No posts found'));
                 echo $res;
             }
@@ -118,7 +119,7 @@
             //JSON encode the result returned from post.regroupArticles
             //print_r(rowCount($res[0]));
                 //echo json_encode($res);
-            $re = $dataType == 'json' ? json_encode($res): $this->post->xml_encode($res);
+            $re = $dataType == 'json' ? json_encode($res): $this->generate_valid_xml_from_array($res,  'article');
             echo $re;
             
         }
@@ -143,13 +144,50 @@
                 'auteur' => $this->post->auteur
             );
             //print_r($post_arr);
-            $resp = $dataType == 'json' ? json_encode($post_arr): $this->post->xml_encode($post_arr);
+            $resp = $dataType == 'json' ? json_encode($post_arr): $this->generate_valid_xml_from_array($post_arr,  'article');
             echo $resp;
+            
 
         }
         public function displayApiDocumentation()
         {
         header('Location: '.'public/documentation/index.html');
         //print_r('Hello');
-    }
+        }
+
+        private function generate_xml_from_array($array, $node_name)
+        {
+        $xml = '';
+        /*$xml = '<?xml version="1.0" encoding="UTF-8" ?>' . "\n";*/
+
+        if (is_array($array) || is_object($array))
+        {
+            foreach ($array as $key => $value)
+            {
+                if (is_numeric($key))
+                {
+                    $key = $node_name;
+                }
+
+                $xml .= '<' . $key . '>' . "\n" . $this->generate_xml_from_array($value, $node_name) . '</' . $key . '>' . "\n";
+            }
+        }
+        else
+        {
+            $xml = htmlspecialchars($array, ENT_QUOTES) . "\n";
+        }
+
+        return $xml;
+        }
+
+        private function generate_valid_xml_from_array($array, $node_name='node')
+        {
+        $xml = '<?xml version="1.0" encoding="UTF-8" ?>' . "\n";
+
+       
+        $xml .= $this->generate_xml_from_array($array, $node_name);
+       
+
+        return $xml;
+        }
     }
