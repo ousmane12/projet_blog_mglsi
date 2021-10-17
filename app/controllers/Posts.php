@@ -104,7 +104,7 @@
           $categories = $this->postModel->getCategories();
           //print_r($post);
           // Check for owner
-        if($post[0]->auteur != $_SESSION['user_name']){
+        if(($post[0]->auteur != $_SESSION['user_name']) && ($_SESSION['user_status'] != 'admin')){
             redirect('pages');
           }
           $data = [
@@ -118,6 +118,7 @@
           $this->view('posts/edit', $data);
         }
       }
+      
 
       public function delete($id){
         if($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -125,7 +126,7 @@
           $post = $this->postModel->getByid($id);
           
           // Check for owner
-          if($post[0]->auteur != $_SESSION['user_name']){
+          if(($post[0]->auteur != $_SESSION['user_name']) && ($_SESSION['user_status'] != 'admin')){
             redirect('pages');
           }
   
