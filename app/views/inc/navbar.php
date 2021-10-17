@@ -72,9 +72,6 @@
             <li class="nav-item">
               <a class="btn btn-outline-info" href="<?php echo URLROOT; ?>/users/list">List Users</a>
             </li>
-            <li class="nav-item">
-              <a class="btn btn-outline-dark" href="<?php echo URLROOT; ?>/users/register">Ajouter Users</a>
-            </li>
             <?php endif; ?>
         </ul>
         
