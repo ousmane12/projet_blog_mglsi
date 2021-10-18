@@ -20,7 +20,10 @@
                 require_once '../app/views/' .$view .'.php';
             }elseif(file_exists('../rest/public/' .$view .'.php')){
                 require_once '../rest/public/' .$view .'.php';
-            }else{
+            }elseif(file_exists('../soapService/service/' .$view .'.php')){
+                require_once '../soapService/service/' .$view .'.php';
+            }
+            else{
                 //view doesnot exist
                 die('View does not exist');
             }

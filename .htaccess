@@ -1,6 +1,7 @@
 <IfModule mod_rewrite.c>
   RewriteEngine on
   RewriteRule -f ^rest/ [QSA]
+  RewriteRule -f ^soapService/ [QSA]
   RewriteRule ^$ public/ [L]
   RewriteRule (.*) public/$1 [L]
   
