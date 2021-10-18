@@ -1,11 +1,29 @@
 <?php
+
+    /**
+     * @OA\Info(
+     *   title="My first API",
+     *   version="1.0.0",
+     *   @OA\Contact(
+     *     email="support@example.com"
+     *   )
+     * )
+     */
+
+     
+
     class Post
     {
         //DB variables
         private $conn; 
         private $table = 'article';
+<<<<<<< HEAD
         public $format;
+=======
+>>>>>>> 856a1dc3372517b8d4128e9959ad2befbccf984d
 
+
+        public $format;
         // Properties
         public $id;
         public $titre;
@@ -21,6 +39,14 @@
         public function __construct($db){
             $this->conn = $db; 
         }
+
+        /**  @OA\Get(
+            *     path="/public/index?action={articles}&{type}", tags ={"article"}
+            *     @OA\Response(response="200", description="success")
+            *     @OA\Response(response="404", description="Error")
+            *     @OA\Info (Liste tous les articles)
+            * )
+            */
         
         // Get posts
         public function read(){
@@ -52,6 +78,16 @@
         }
 
         //get single post
+<<<<<<< HEAD
+=======
+         /**  @OA\Get(
+            *     path="/public/index?action={article}&{id}&{type}", tags ={"public"}
+            *     @OA\Response(response="200", description="success")
+            *     @OA\Response(response="404", description="Error")
+            *     @OA\Info (lis un article selon son id)
+            * )
+            */
+>>>>>>> 856a1dc3372517b8d4128e9959ad2befbccf984d
         public function read_single($id){
             $query = 'SELECT c.libelle as category_name,
             p.id,
@@ -64,14 +100,22 @@
             ' . $this->table . ' p 
             LEFT JOIN categorie c on p.categorie = c.id
             WHERE 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 856a1dc3372517b8d4128e9959ad2befbccf984d
              p.id = '.$id.'
             LIMIT 0,1';
 
              //prepare statement 
              $stmt = $this->conn->prepare($query);
 
+<<<<<<< HEAD
              //BIND the ID
              //$stmt->bindParam(1, $this->id);
+=======
+             
+>>>>>>> 856a1dc3372517b8d4128e9959ad2befbccf984d
              //Execute it 
              $stmt->execute();
              $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -88,26 +132,41 @@
 
         
         //Read all post by category
-        public function read_by_cat(){
+         /**  @OA\Get(
+            *     path="/public/index?action={articlescategorie}&{type:xml/json}", tags ={"public"}
+            *     @OA\Response(response="200", description="success")
+            *     @OA\Response(response="404", description="Error")
+            *     @OA\Info read article by their categorie
+            * )
+            */
+        public function read_by_cat($libelle){
             //Query 
             $req = 'SELECT a.id, a.titre, a.contenu, a.dateCreation, a.dateModification, a.auteur, a.categorie, c.libelle as category_name
-            FROM '.$this->table.' a inner join categorie c on a.categorie = c.id where c.libelle = ?;
+            FROM '.$this->table.' a inner join categorie c on a.categorie = c.id where c.libelle = "'.$libelle.'";
             ';
 
             // prepare query
              //prepare statement 
              $stmt = $this->conn->prepare($req);
 
-             //BIND the ID
-             $stmt->bindParam(1, $this->libelle);
+            
              //Execute it 
              $stmt->execute();
              //prepare statement 
-             
-             
              return $stmt;
         
         }
+<<<<<<< HEAD
+=======
+
+        /**  @OA\Get(
+            *     path="/public/index?action=articlesByCategory&type={type:xml/json}", tags ={"article"}
+            *     @OA\Response(response="200", description="success")
+            *     @OA\Response(response="404", description="Error")
+            *     @OA\Info read all articles grouping them by their category
+            * )
+            */
+>>>>>>> 856a1dc3372517b8d4128e9959ad2befbccf984d
         //read by category using all categories
         public function regroupCategories()
         {
@@ -122,6 +181,13 @@
             return $this->categories;
 
         }
+        /**  @OA\Get(
+            *     path="/public/index?action={articlesByCategory}&{type:xml/json}", tags ={"public"}
+            *     @OA\Response(response="200", description="success")
+            *     @OA\Response(response="404", description="Error")
+            *     @OA\Info read all articles grouping them by their category
+            * )
+            */
         public function regroupArticles(){
             foreach ($this->categories as $c => $value) {
                 $req = 'SELECT a.id, a.titre, a.contenu, a.dateCreation, a.dateModification, a.auteur, a.categorie, c.libelle as category_name
@@ -135,6 +201,7 @@
             return $this->categories;
            
         }
+<<<<<<< HEAD
 
         public function xml_encode($mixed, $domElement=null, $DOMDocument=null) {
             if (is_null($DOMDocument)) {
@@ -179,4 +246,7 @@
     }
 
 
+=======
+    }
+>>>>>>> 856a1dc3372517b8d4128e9959ad2befbccf984d
     

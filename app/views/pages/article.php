@@ -10,7 +10,7 @@
 </div>
 <hr>
 <a href="<?php echo URLROOT; ?>/pages" class="col-sm-2 btn btn-outline-secondary"><i class="fa fa-backward"></i> Back</a>
-<?php if($data['article'][0]->auteur == $_SESSION['user_name']) : ?>
+<?php if(($data['article'][0]->auteur == $_SESSION['user_name']) || ($_SESSION['user_name'] == 'admin')  ) : ?>
   
   <a href="<?php echo URLROOT; ?>/posts/edit/<?php echo $data['article'][0]->id; ?>" class="col-sm-2 btn btn-outline-warning">Edit</a>
   <form class="col-sm col-sm-4 pull-right" action="<?php echo URLROOT; ?>/posts/delete/<?php echo $data['article'][0]->id; ?>" method="post">
@@ -20,5 +20,4 @@
 <br>
 </div> 
 
-  
 <?php require APPROOT . '/views/inc/footer.php'; ?>

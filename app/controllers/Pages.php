@@ -23,6 +23,8 @@
         $this->view('pages/index', $data);
     }
 
+   
+
     public function navbar(){
         //$posts = $this->postModel->getPost();
         $categories = $this->postModel->getCategories();
@@ -69,15 +71,15 @@
             //print_r($_GET['url']);
             $articleId = $this->postModel->getByid($_GET['url']);
             //print_r($articleId);
+
             $categories = $this->postModel->getCategories();
-            $user = $this->userModel->getUserById($articleId[0]->auteur);
+            
             $data = [
                 'categories' => $categories,
                 'article' => $articleId,
-                'user' => $user
+               
             ];
-            
-            
+          
         }else{
             echo 'Error has occured';
         }
