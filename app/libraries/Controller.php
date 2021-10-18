@@ -20,8 +20,8 @@
                 require_once '../app/views/' .$view .'.php';
             }elseif(file_exists('../rest/public/' .$view .'.php')){
                 require_once '../rest/public/' .$view .'.php';
-            }elseif(file_exists('../soapService/service/' .$view .'.php')){
-                require_once '../soapService/service/' .$view .'.php';
+            }elseif(file_exists('../soapService/Persistance/wsdl/' .$view .'.wsdl')){
+                require_once '../soapService/Persistance/wsdl/' .$view .'.wsdl';
             }
             else{
                 //view doesnot exist
