@@ -27,13 +27,13 @@ class LoginModel:
         self._password = passwd
 class UserModel:
 
-    def __init__(self, id, nom, prenom, mail, role,username, password,token):
+    def __init__(self, id, nom, prenom, mail, role,username, password,token=""):
         self._id = id
         self._nom = nom
         self._prenom = prenom
         self._mail = mail
-        self._username = username
         self._role = role
+        self._username = username
         self._password = password
         self._token = token
 
@@ -46,8 +46,14 @@ class UserModel:
         return self._prenom
     def getMail(self):
         return self._mail
-    def geStatut(self):
+    def getRole(self):
         return self._role
+    def getUsername(self):
+        return self._username
+    def getPassword(self):
+        return self._password
+    def getToken(self):
+        return self._token
 
     # Setters
     def setNom(self,nom):
@@ -56,5 +62,11 @@ class UserModel:
         self._prenom = prenom
     def setMail(self,mail):
         self._mail = mail
-    def setStatut(self,statut):
-        self._role = statut
+    def setRole(self,role):
+        self._role = role
+    def setUsername(self,username):
+        self._username = username
+    def setPassword(self,password):
+        self._password = password
+    def setToken(self,token):
+        self._token = token

@@ -4,11 +4,6 @@ from tkinter.messagebox import showinfo
 from pythonAppClient.model.model import LoginModel, UserModel
 
 
-################## CLASS VIEW ##################
-class View:
-    pass
-
-
 ################## CLASS LOGIN VIEW ##################
 class LogView:
     def __init__(self, logController):
@@ -92,20 +87,21 @@ class UserView:
         self.win.resizable(False, False)
         self.win.config(background='#28527a')
 
-        self.treeFrame = tk.Frame(self.win, width=self.width / 2 - 5, height=self.height - 52, bg='#2a5a84')
-        self.manageFrame = tk.Frame(self.win, width=self.width / 2 - 5, height=self.height - 52, bg='#2a5a84')
+        self.treeFrame = tk.Frame(self.win, width=self.width - self.width/3-10, height=self.height - 52, bg='#2a5a84')
+        self.manageFrame = tk.Frame(self.win, width=self.width / 3, height=self.height - 52, bg='#2a5a84')
         self.treeFrame.place(x=0, y=50)
-        self.manageFrame.place(x=self.width / 2, y=50)
+        self.manageFrame.place(x=self.width - self.width/3-5, y=50)
 
         self.entries = {}
         self.buttons = {}
         self.labels = {}
         self.frames = {}
+        self.RadioButton = {}
+        self.radioVar = tk.IntVar()
         self.userController = userController
 
         # creer un tree pour afficher la list des utilisateur
-        columns = ('#1', '#2', '#3', '#4', '#5')
-        self.tree = ttk.Treeview(self.treeFrame, columns=columns, show='headings')
+        self.tree = ttk.Treeview(self.treeFrame, show='headings')
 
         self.create_view()
 
@@ -119,49 +115,64 @@ class UserView:
         self.draw_treeView()
 
     def draw_manageFrame(self):
+        self.create_search_frame(x=5,y=10)
         self.create_entry(
-            self.manageFrame, "ID", x=40, y=110, textvar=tk.DoubleVar(), state='disabled'
-        )
-
-        self.create_entry(
-            self.manageFrame, "Nom", x=40, y=150, textvar=tk.DoubleVar(), state='enabled'
+            self.manageFrame, "ID", x=5, y=110, textvar=tk.StringVar(), state='disabled'
         )
         self.create_entry(
-            self.manageFrame, "Prenom", x=40, y=190, textvar=tk.DoubleVar(), state='enabled'
+            self.manageFrame, "Nom", x=5, y=150, textvar=tk.StringVar(), state='enabled'
         )
         self.create_entry(
-            self.manageFrame, "Mail", x=40, y=230, textvar=tk.DoubleVar(), state='enabled'
+            self.manageFrame, "Prenom", x=5, y=190, textvar=tk.StringVar(), state='enabled'
         )
         self.create_entry(
-            self.manageFrame, "Statut", x=40, y=270, textvar=tk.DoubleVar(), state='enabled'
+            self.manageFrame, "Mail", x=5, y=230, textvar=tk.StringVar(), state='enabled'
         )
-        self.create_button(self.manageFrame, name='AJOUTER', x=430, y=120, command=self.add)
-        self.create_button(self.manageFrame, name='MODIFIER', x=430, y=180, command=self.update)
-        self.create_button(self.manageFrame, name='SUPPRIMER', x=430, y=240, command=self.delete)
+        self.create_entry(
+            self.manageFrame, "Role", x=5, y=270, textvar=tk.StringVar(), state='enabled'
+        )
+        self.create_entry(
+            self.manageFrame, "Username", x=5, y=310, textvar=tk.StringVar(), state='enabled'
+        )
+        self.create_entry(
+            self.manageFrame, "Password", x=5, y=350, textvar=tk.StringVar(), state='enabled'
+        )
+        self.create_entry(
+            self.manageFrame, "Token", x=5, y=390, textvar=tk.StringVar(), state='enabled'
+        )
+        self.create_button(self.manageFrame, name='AJOUTER', x=270, y=180, command=self.add)
+        self.create_button(self.manageFrame, name='MODIFIER', x=270, y=240, command=self.update)
+        self.create_button(self.manageFrame, name='SUPPRIMER', x=270, y=300, command=self.delete)
 
     def draw_treeView(self):
         users = self.userController.getUsers()
-
+        user = users[0].__dict__
+        columns = ()
         # definition des identificateurs
-        columns = ('#1', '#2', '#3', '#4', '#5')
+        for col in user.keys():
+            columns += (col,)
         self.tree = ttk.Treeview(self.treeFrame, columns=columns, show='headings')
-        self.tree.heading('#1', text='ID')
-        self.tree.column("#1", minwidth=0, width=25)
-        self.tree.heading('#2', text='Nom')
-        self.tree.column("#2", minwidth=0, width=100)
-        self.tree.heading('#3', text='Prenom')
-        self.tree.column("#3", minwidth=0, width=160)
-        self.tree.heading('#4', text='Mail')
-        self.tree.column("#4", minwidth=0, width=170)
-        self.tree.heading('#5', text='Statut')
-        self.tree.column("#5", minwidth=0, width=100)
+        for col in user.keys():
+            print(col[1:])
+            self.tree.heading(col, text=col[1:])
+        print(columns)
+        # definir la taille des columns
+        self.tree.column('_id', minwidth=0, width=25)
+        self.tree.column('_nom', minwidth=0, width=100)
+        self.tree.column('_prenom', minwidth=0, width=150)
+        self.tree.column('_mail', minwidth=0, width=150)
+        self.tree.column('_role', minwidth=0, width=50)
+        self.tree.column('_username', minwidth=0, width=150)
+        self.tree.column('_password', minwidth=0, width=160)
+        self.tree.column('_token', minwidth=0, width=100)
 
         # generate tuple of users
         usrs = []
         for user in users:
             dic = user.__dict__
             usrs.append(
-                (f'{dic["_id"]}', f'{dic["_nom"]}', f'{dic["_prenom"]}', f'{dic["_mail"]}', f'{dic["_statut"]}'))
+                (f'{dic["_id"]}', f'{dic["_nom"]}', f'{dic["_prenom"]}', f'{dic["_mail"]}',
+                 f'{dic["_role"]}', f'{dic["_username"]}', f'{dic["_password"]}', f'{dic["_token"]}'))
 
         for user in usrs:
             self.tree.insert('', tk.END, values=user)
@@ -170,34 +181,69 @@ class UserView:
 
     # bind the select event
     def on_tree_select(self, event):
-        print("selected items:")
         item = self.tree.selection()[0]
         self.set_entries(item)
 
-    def set_entries(self,item):
-
+    def set_entries(self, item):
+        # vider les zones de saisie
+        self.clear_entries()
         self.entries['ID'].configure(state='normal')
-        self.entries['ID'].delete(0, tk.END)
         self.entries['ID'].insert(0, self.tree.item(item, 'values')[0])
         self.entries['ID'].configure(state='disabled')
-        self.entries['Nom'].delete(0, tk.END)
         self.entries['Nom'].insert(0, self.tree.item(item, 'values')[1])
-        self.entries['Prenom'].delete(0, tk.END)
         self.entries['Prenom'].insert(0, self.tree.item(item, 'values')[2])
-        self.entries['Mail'].delete(0, tk.END)
         self.entries['Mail'].insert(0, self.tree.item(item, 'values')[3])
-        self.entries['Statut'].delete(0, tk.END)
-        self.entries['Statut'].insert(0, self.tree.item(item, 'values')[4])
+        self.entries['Role'].insert(0, self.tree.item(item, 'values')[4])
+        self.entries['Username'].insert(0, self.tree.item(item, 'values')[5])
+        self.entries['Password'].insert(0, self.tree.item(item, 'values')[6])
+        self.entries['Token'].insert(0, self.tree.item(item, 'values')[7])
 
+    # fonction vider toutes les zones de saisie
+    def clear_entries(self):
+        self.entries['ID'].configure(state='normal')
+        self.entries['ID'].delete(0, tk.END)
+        self.entries['ID'].configure(state='disabled')
+        self.entries['Nom'].delete(0, tk.END)
+        self.entries['Prenom'].delete(0, tk.END)
+        self.entries['Mail'].delete(0, tk.END)
+        self.entries['Role'].delete(0, tk.END)
+        self.entries['Username'].delete(0, tk.END)
+        self.entries['Password'].delete(0, tk.END)
+        self.entries['Token'].delete(0, tk.END)
 
     # Creer une zone de saisie
     def create_entry(self, frame, label, x, y, textvar, state):
-        self.labels[label] = tk.Label(frame, text=label, bg="#2a5a84", fg='white', font=("Calibri 14"))
+        self.labels[label] = tk.Label(frame, text=label, bg="#2a5a84", fg='white', font=("Calibri 12"))
         self.labels[label].place(x=x, y=y)
         self.labels[label].update()
-        self.entries[label] = ttk.Entry(frame, width=25, textvariable=textvar, state=state, font=("Calibri 16"))
+        self.entries[label] = ttk.Entry(frame, width=20, textvariable=textvar, state=state, font=("Calibri 12"))
         self.entries[label].place(x=x + 70, y=y)
-        self.entries[label].delete(0, 3)
+
+    def create_search_frame(self, x, y):
+        searchFrame = tk.Frame(self.manageFrame, width=self.width / 3, height=80, bg='#2a5a84')
+        searchFrame.place(x=0, y=5)
+
+        self.entries['search'] = ttk.Entry(searchFrame, width=25,  font=("Arial 12"))
+        self.entries['search'].place(x= 40, y= 20)
+
+        self.RadioButton['id'] = tk.Radiobutton(searchFrame, text='Id', bg="#2a5a84",
+                                                fg="black", variable=self.radioVar, value=1, command=self.chBListener)
+        self.RadioButton['mail'] = tk.Radiobutton(searchFrame, text='Mail', bg="#2a5a84",
+                                                  fg="black", variable=self.radioVar, value=2, command=self.chBListener)
+        # selectionee le bouton id
+        self.RadioButton['id'].select()
+
+        self.RadioButton['id'].place(x=100, y=50)
+        self.RadioButton['mail'].place(x=150, y=50)
+
+        self.buttons['search'] = tk.Button(searchFrame, width=5, height=1, bg='#21486b', fg='white', command=self.search)
+        self.buttons['search']["text"] = 'Search'
+        self.buttons['search'].place(x= 280, y=20)
+
+    def search(self):
+        print(self.radioVar.get())
+    def chBListener(self):
+        pass
 
     def quit(self):
         self.win.destroy()

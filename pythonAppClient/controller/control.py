@@ -3,9 +3,9 @@ from zeep import Client
 from pythonAppClient.model.model import LoginModel, UserModel
 from pythonAppClient.view.view import LogView, UserView
 
-client = Client('http://localhost/projet_blog_mglsi/soapService/service/UserController.php?wsdl')
-result = client.service.getAllUserList()
-print(result)
+# client = Client('http://localhost/projet_blog_mglsi/soapService/service/UserController.php?wsdl')
+# result = client.service.getAllUserList()
+# print(result)
 
 ################## CLASS LOGIN CONTROLLER ##################
 class LogController:
@@ -30,7 +30,7 @@ class LogController:
 class UserManagerController:
 
     def __init__(self):
-        self.userModel = UserModel(id="", nom="", prenom="", mail="", role="")
+        self.userModel = UserModel(id="", nom="", prenom="", mail="", role="", username="", password="", token="")
         self.userView = UserView(self)
 
     def main(self):
@@ -38,9 +38,9 @@ class UserManagerController:
 
     def getUsers(self):
         users = []
-        user1 = UserModel(id=1, nom='sow', prenom='ousmane', mail='sow@gmail.com', role='admin')
-        user2 = UserModel(id=2, nom='barry', prenom='hams', mail='barry@gmail.com', role='editeur')
-        user3 = UserModel(id=3, nom='mbaye', prenom='ababacar', mail='mbaye@gmail.com', role='editeur')
+        user1 = UserModel(id=1, nom='sow', prenom='ousmane', mail='sow@gmail.com', role='admin', username='username', password='dlsfksejod', token='tokemns,.msfsfd')
+        user2 = UserModel(id=2, nom='barry', prenom='hams', mail='barry@gmail.com', role='editeur', username='', password='', token='')
+        user3 = UserModel(id=3, nom='mbaye', prenom='ababacar', mail='mbaye@gmail.com', role='editeur', username='', password='', token='')
         users.append(user1)
         users.append(user2)
         users.append(user3)
@@ -60,6 +60,7 @@ class UserManagerController:
 
 
 if __name__ == '__main__':
-    logController = LogController()
-    logController.main()
-
+    # logController = LogController()
+    # logController.main()
+    userController = UserManagerController()
+    userController.main()

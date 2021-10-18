@@ -2,7 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="221ddb55-3983-4c6e-bfb0-83e944c854db" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/pythonAppClient/service/userManager.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pythonAppClient/controller/control.py" beforeDir="false" afterPath="$PROJECT_DIR$/pythonAppClient/controller/control.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pythonAppClient/model/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/pythonAppClient/model/model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pythonAppClient/view/view.py" beforeDir="false" afterPath="$PROJECT_DIR$/pythonAppClient/view/view.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
