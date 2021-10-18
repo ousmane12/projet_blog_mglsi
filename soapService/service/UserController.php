@@ -94,7 +94,7 @@ class UserController{
         $bdd->connect();
         $id = (int) $id;
 
-        $request = $bdd->query('SELECT * FROM User WHERE id = '.$id);
+        $request = $bdd->query('SELECT * FROM User WHERE id = "'.$id.'"');
         $data = $request->fetch(PDO::FETCH_ASSOC);
 
         $user = ($data === false) ? null : new User($data);
@@ -108,7 +108,7 @@ class UserController{
     {
         $bdd = new Database('localhost','3306', 'glsi_blog', 'root', '');
         $bdd->connect();
-        $request = $bdd->query('SELECT * FROM user WHERE email = '.$email);
+        $request = $bdd->query('SELECT * FROM user WHERE email = "'.$email.'"');;
         $data = $request->fetch(PDO::FETCH_ASSOC);
 
         $user = ($data === false) ? null : new User($data);
@@ -138,18 +138,22 @@ class UserController{
         ]);
     }
 
+    /**
+     * AUTHENTIFy user
+     */
     public function authenticateUser($useranme, $password)
     {
         $bdd = new Database('localhost','3306', 'glsi_blog', 'root', '');
         $bdd->connect();
-
-        $request = $bdd->prepare('SELECT * FROM user WHERE username = :username and password = :password');
+        $role = 'admin';
+        $request = $bdd->prepare('SELECT * FROM user WHERE username = :username and password = :password and role = :role');
         $request->execute([
             'username' => $useranme,
-            'password'   => md5(sha1(str_rot13($password)))
+            'password'   => md5(sha1(str_rot13($password))),
+            'role' => $role
         ]);
         
-        count($request->fetchAll());
+        return count($request->fetchAll());
     }
 
 

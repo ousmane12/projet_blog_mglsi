@@ -7,6 +7,6 @@
   // App Root
   define('APPROOT', dirname(dirname(__FILE__)));
   // URL Root
-  define('URLROOT', 'http://localhost/my_blog_mvc');
+  define('URLROOT', 'http://localhost/projet_blog_mglsi');
   // Site Name
   define('SITENAME', 'GLSI INFOS');

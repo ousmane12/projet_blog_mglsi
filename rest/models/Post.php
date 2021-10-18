@@ -4,10 +4,7 @@
         //DB variables
         private $conn; 
         private $table = 'article';
-<<<<<<< HEAD
-=======
         public $format;
->>>>>>> afafeb1223a0ae3a8bb012af7a1d2a5508be8985
 
         // Properties
         public $id;
@@ -55,11 +52,7 @@
         }
 
         //get single post
-<<<<<<< HEAD
-        public function read_single(){
-=======
         public function read_single($id){
->>>>>>> afafeb1223a0ae3a8bb012af7a1d2a5508be8985
             $query = 'SELECT c.libelle as category_name,
             p.id,
             p.titre,
@@ -71,22 +64,14 @@
             ' . $this->table . ' p 
             LEFT JOIN categorie c on p.categorie = c.id
             WHERE 
-<<<<<<< HEAD
-             p.id = ?
-=======
              p.id = '.$id.'
->>>>>>> afafeb1223a0ae3a8bb012af7a1d2a5508be8985
             LIMIT 0,1';
 
              //prepare statement 
              $stmt = $this->conn->prepare($query);
 
              //BIND the ID
-<<<<<<< HEAD
-             $stmt->bindParam(1, $this->id);
-=======
              //$stmt->bindParam(1, $this->id);
->>>>>>> afafeb1223a0ae3a8bb012af7a1d2a5508be8985
              //Execute it 
              $stmt->execute();
              $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -123,10 +108,6 @@
              return $stmt;
         
         }
-<<<<<<< HEAD
-
-=======
->>>>>>> afafeb1223a0ae3a8bb012af7a1d2a5508be8985
         //read by category using all categories
         public function regroupCategories()
         {
@@ -154,9 +135,6 @@
             return $this->categories;
            
         }
-<<<<<<< HEAD
-    }
-=======
 
         public function xml_encode($mixed, $domElement=null, $DOMDocument=null) {
             if (is_null($DOMDocument)) {
@@ -201,5 +179,4 @@
     }
 
 
->>>>>>> afafeb1223a0ae3a8bb012af7a1d2a5508be8985
     
