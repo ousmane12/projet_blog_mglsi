@@ -97,7 +97,7 @@ class UserController{
         $request = $bdd->query('SELECT * FROM User WHERE id = '.$id);
         $data = $request->fetch(PDO::FETCH_ASSOC);
 
-        $user = ($data === false) ? null : new User($data);
+        $user = ($data === false) ? null : $data;
         return $user;
     }
 
