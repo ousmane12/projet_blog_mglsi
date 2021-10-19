@@ -22,21 +22,7 @@ class UserController{
     {
         $bdd = new Database('localhost','3306', 'glsi_blog', 'root', '');
          $bdd->connect();
-
-         // Store the cipher method
-        $ciphering = "AES-128-CTR";
-        $iv_length = openssl_cipher_iv_length($ciphering);
-        $options = 0;
-          
-        // Non-NULL Initialization Vector for encryption
-        $encryption_iv = '1234567891011121';
-          
-        // Store the encryption key
-        $encryption_key = "MGLSINewsCrypto&";
-
-        $password_encrypted = openssl_encrypt($password, $ciphering,
-        $encryption_key, $options, $encryption_iv);
-
+         
          $token = $this->generateRandomString();
  
 
@@ -48,7 +34,7 @@ class UserController{
             'prenom' => $prenom,
             'email'   => $email,
             'username'   => $username,
-            'password'   => $password_encrypted ,
+            'password'   => md5(sha1(str_rot13($password))),
             'role' => $role,
             'token' => $token
         ]);
@@ -111,7 +97,7 @@ class UserController{
         $request = $bdd->query('SELECT * FROM User WHERE id = "'.$id.'"');
         $data = $request->fetch(PDO::FETCH_ASSOC);
 
-        $user = ($data === false) ? null : $data;
+        $user = ($data === false) ? null : ($data);
         return $user;
     }
 
@@ -139,32 +125,39 @@ class UserController{
 
         $id = (int) $id;
 
-         // Store the cipher method
-         $ciphering = "AES-128-CTR";
-         $iv_length = openssl_cipher_iv_length($ciphering);
-         $options = 0;
-           
-       // Non-NULL Initialization Vector for decryption
-            $decryption_iv = '1234567891011121';
-            
-            // Store the decryption key
-            $decryption_key = "MGLSINewsCrypto&";
- 
-         // Use openssl_decrypt() function to decrypt the data
-        $password_decrypt =openssl_decrypt ($password, $ciphering, 
-        $decryption_key, $options, $decryption_iv);
-        $request = $bdd ->prepare('UPDATE user SET nom = :nom, prenom = :prenom, username =:username,
-                         email = :email, password =:password, role =:role WHERE id = :id');
+        $req_get_pass = $bdd->prepare('SELECT password FROM user WHERE id = :id');
 
-        return $request->execute([
-            'nom'    => $nom,
-            'prenom' => $prenom,
-            'username'   => $username,
-            'email'   => $email,
-            'password'   => $password_decrypt,
-            'role' => $role,
+        $req_get_pass->execute([
             'id' => $id
         ]);
+
+        if($req_get_pass == md5(sha1(str_rot13($password)))){
+            $request = $bdd ->prepare('UPDATE user SET nom = :nom, prenom = :prenom, username =:username,
+            email = :email, role =:role WHERE id = :id');
+
+            return $request->execute([
+                'nom'    => $nom,
+                'prenom' => $prenom,
+                'username'   => $username,
+                'email'   => $email,
+                'role' => $role,
+                'id' => $id
+            ]);     
+        }else{
+            $request = $bdd ->prepare('UPDATE user SET nom = :nom, prenom = :prenom, username =:username,
+            email = :email,  password =:password, role =:role WHERE id = :id');
+
+            return $request->execute([
+                'nom'    => $nom,
+                'prenom' => $prenom,
+                'username'   => $username,
+                'email'   => $email,
+                'password'   => md5(sha1(str_rot13($password))),
+                'role' => $role,
+                'id' => $id
+            ]);
+        }
+        
     }
 
     /**
