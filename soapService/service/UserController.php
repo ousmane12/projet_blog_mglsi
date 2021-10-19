@@ -111,7 +111,7 @@ class UserController{
         $request = $bdd->query('SELECT * FROM user WHERE email =  "'.$email.'"');
         $data = $request->fetch(PDO::FETCH_ASSOC);
 
-        $user = ($data === false) ? null : new User($data);
+        $user = ($data === false) ? null : $data;
         return $user;
     }
     /**
