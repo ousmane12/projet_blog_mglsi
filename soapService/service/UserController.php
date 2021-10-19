@@ -133,13 +133,14 @@ class UserController{
 
         if($req_get_pass == md5(sha1(str_rot13($password)))){
             $request = $bdd ->prepare('UPDATE user SET nom = :nom, prenom = :prenom, username =:username,
-            email = :email, role =:role WHERE id = :id');
+            email = :email,password =:password, role =:role WHERE id = :id');
 
             return $request->execute([
                 'nom'    => $nom,
                 'prenom' => $prenom,
                 'username'   => $username,
                 'email'   => $email,
+                'password'   => $password,
                 'role' => $role,
                 'id' => $id
             ]);     
