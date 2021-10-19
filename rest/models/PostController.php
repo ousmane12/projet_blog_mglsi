@@ -1,5 +1,12 @@
 <?php
-
+    require_once '../../app/helpers/session_helper.php';
+    require_once '../../app/config/Config.php';
+    require_once '../../app/helpers/url_helper.php';
+    require_once '../../app/libraries/Controller.php';
+    require_once '../../app/controllers/Users.php';
+    
+    
+   
     /**
      * @OA\Info(
      *   title="GLSI news api",
@@ -11,19 +18,23 @@
      */
     include_once '../config/Database.php';
     include_once 'Post.php';
-    header('Access-Control-Allow-Origin: *');
     
     
-    class PostController
+    class PostController extends Controller
     {
         //public $post;
-        
-
+       
         public function __construct(){
             //$this->post = $post;
             $this->database = new Database();
             $this->db = $this->database->connect();
             $this->post = new Post($this->db);
+            if(!isLoggedIn()){
+                print_r(array(
+                    "Error" => "Error has ocurred. You need to authenticate before using any service"
+                ));
+              }
+              
         }
            /**
          * @OA\Get(
@@ -33,17 +44,43 @@
          *     @OA\Info 
          * )
          */
+
+        public function getToken($id){
+            $result = $this->post->readToken($id);
+            return $result;
+            print_r($result);
+        }
+        
+
+        
         function get($type){
+            if(isset($_SESSION['user_id'])){
+            $token = $this->getToken($_SESSION['user_id']);
+            //print_r($token['token']);
+            $ch = curl_init();
             $dataType = $type != 'json' ? $type : 'json';
-            //$post->libelle = isset($_GET['categorie']) ? $_GET['categorie'] : die();
-            $dataType == 'xml' ? header("Content-Type: application/xml; charset=UTF-8") : header("Content-Type: application/json; charset=UTF-8");
+            $dataType == 'xml' ? curl_setopt($ch, CURLOPT_HTTPHEADER,
+            array(
+                'Authorization: Token '.$token['token'].'',
+                 'Content-type: application/xml',
+                 'Access-Control-Allow-Origin: *'
+            )) :curl_setopt($ch, CURLOPT_HTTPHEADER,
+            array(
+                'Authorization: Token '.$token['token'].'',
+                 'Content-type: application/json',
+                 'Access-Control-Allow-Origin: *'
+            ));
+            $resp = curl_exec($ch);
+            curl_close($ch);
+            var_dump($resp);
+            
             $result = $this->post->read();
             $num = $result->rowCount();
             //Check if any post 
             if ($num > 0){
                 //Post array
                 $post_array = array();
-                $post_array['Article'] = array();
+                $post_array['Articles'] = array();
                 while($row = $result->fetch(PDO::FETCH_ASSOC)){
                     extract($row);
                     $post_item = array(
@@ -73,10 +110,27 @@
             }
     
         }
+    }
 //articles by category
         public function get_by_cat($categorie,$type){
+            if(isset($_SESSION['user_id'])){
+            $token = $this->getToken($_SESSION['user_id']);
+            $ch = curl_init();
             $dataType = $type != 'json' ? $type : 'json';
-            $dataType == 'xml' ? header("Content-Type: application/xml; charset=UTF-8") : header("Content-Type: application/json; charset=UTF-8");
+            $dataType == 'xml' ? curl_setopt($ch, CURLOPT_HTTPHEADER,
+            array(
+                'Authorization: Token '.$token['token'].'',
+                 'Content-type: application/xml',
+                 'Access-Control-Allow-Origin: *'
+            )) :curl_setopt($ch, CURLOPT_HTTPHEADER,
+            array(
+                'Authorization: Token '.$token['token'].'',
+                 'Content-type: application/json',
+                 'Access-Control-Allow-Origin: *'
+            ));
+            $resp = curl_exec($ch);
+            curl_close($ch);
+            var_dump($resp);
             $this->post->libelle = $categorie;
             $results = $this->post->read_by_cat($categorie);
             $num = $results->rowCount();
@@ -109,10 +163,27 @@
                 echo $res;
             }
         }
+    }
 
         public function get_all_cat($type){
+            if(isset($_SESSION['user_id'])){
+            $token = $this->getToken($_SESSION['user_id']);
+            $ch = curl_init();
             $dataType = $type != 'json' ? $type : 'json';
-            $dataType == 'xml' ? header("Content-Type: application/xml; charset=UTF-8") : header("Content-Type: application/json; charset=UTF-8");
+            $dataType == 'xml' ? curl_setopt($ch, CURLOPT_HTTPHEADER,
+            array(
+                'Authorization: Token '.$token['token'].'',
+                 'Content-type: application/xml',
+                 'Access-Control-Allow-Origin: *'
+            )) :curl_setopt($ch, CURLOPT_HTTPHEADER,
+            array(
+                'Authorization: Token '.$token['token'].'',
+                 'Content-type: application/json',
+                 'Access-Control-Allow-Origin: *'
+            ));
+            $resp = curl_exec($ch);
+            curl_close($ch);
+            var_dump($resp);
             $results = $this->post->regroupCategories();
             $res = $this->post->regroupArticles();
             
@@ -123,11 +194,27 @@
             echo $re;
             
         }
+    }
 
         public function get_by_id($id, $type){
-           
-            $dataType = $type != null ? $type : 'json';
-            $dataType == 'xml' ? header("Content-Type: application/xml; charset=UTF-8") : header("Content-Type: application/json; charset=UTF-8");
+            if(isset($_SESSION['user_id'])){
+            $token = $this->getToken($_SESSION['user_id']);
+            $ch = curl_init();
+            $dataType = $type != 'json' ? $type : 'json';
+            $dataType == 'xml' ? curl_setopt($ch, CURLOPT_HTTPHEADER,
+            array(
+                'Authorization: Token '.$token['token'].'',
+                 'Content-type: application/xml',
+                 'Access-Control-Allow-Origin: *'
+            )) :curl_setopt($ch, CURLOPT_HTTPHEADER,
+            array(
+                'Authorization: Token '.$token['token'].'',
+                 'Content-type: application/json',
+                 'Access-Control-Allow-Origin: *'
+            ));
+            $resp = curl_exec($ch);
+            curl_close($ch);
+            var_dump($resp);
             //$this->post->id = isset($_GET['id']) ? $id : die();
             //echo $id;
             //Get post
@@ -149,6 +236,7 @@
             
 
         }
+    }
         public function displayApiDocumentation()
         {
         header('Location: '.'public/documentation/index.html');
