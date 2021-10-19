@@ -79,7 +79,7 @@ class UserController{
 
         while($data = $request->fetch(PDO::FETCH_ASSOC))
         {
-            $users [] = new User($data);
+            $users [] = $data;
         }
 
         return $users;
@@ -108,7 +108,7 @@ class UserController{
     {
         $bdd = new Database('localhost','3306', 'glsi_blog', 'root', '');
         $bdd->connect();
-        $request = $bdd->query('SELECT * FROM user WHERE email = '.$email);
+        $request = $bdd->query('SELECT * FROM user WHERE email =  "'.$email.'"');
         $data = $request->fetch(PDO::FETCH_ASSOC);
 
         $user = ($data === false) ? null : new User($data);
