@@ -4,10 +4,9 @@
     <list default="true" id="221ddb55-3983-4c6e-bfb0-83e944c854db" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pythonAppClient/controller/control.py" beforeDir="false" afterPath="$PROJECT_DIR$/pythonAppClient/controller/control.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pythonAppClient/model/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/pythonAppClient/model/model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pythonAppClient/service/userManager.py" beforeDir="false" afterPath="$PROJECT_DIR$/pythonAppClient/service/userService.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pythonAppClient/service/userService.py" beforeDir="false" afterPath="$PROJECT_DIR$/pythonAppClient/service/userService.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pythonAppClient/view/view.py" beforeDir="false" afterPath="$PROJECT_DIR$/pythonAppClient/view/view.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/soapService/Persistance/wsdl/user.wsdl" beforeDir="false" afterPath="$PROJECT_DIR$/soapService/Persistance/wsdl/user.wsdl" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/soapService/service/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/soapService/service/UserController.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

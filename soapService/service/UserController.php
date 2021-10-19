@@ -130,8 +130,9 @@ class UserController{
         $req_get_pass->execute([
             'id' => $id
         ]);
-
-        if($req_get_pass == md5(sha1(str_rot13($password)))){
+        unset($this->PDOStatement);
+        $hashed_password = $req_get_pass->fetch(PDO::FETCH_ASSOC);
+        if(password_verify($password, $hashed_password)){
             $request = $bdd ->prepare('UPDATE user SET nom = :nom, prenom = :prenom, username =:username,
             email = :email,password =:password, role =:role WHERE id = :id');
 
@@ -140,7 +141,7 @@ class UserController{
                 'prenom' => $prenom,
                 'username'   => $username,
                 'email'   => $email,
-                'password'   => $password,
+                'password'   => $hashed_password,
                 'role' => $role,
                 'id' => $id
             ]);     

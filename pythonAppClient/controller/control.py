@@ -1,3 +1,5 @@
+from tkinter import messagebox
+
 from zeep import Client
 
 from pythonAppClient.model.model import LoginModel, UserModel
@@ -7,6 +9,7 @@ from pythonAppClient.view.view import LogView, UserView
 
 ################## CLASS LOGIN CONTROLLER ##################
 class LogController:
+    userService = UserService()
     def __init__(self):
         self.logModel = LoginModel(login="", passwd="")
         self.logView = LogView(self)
@@ -15,14 +18,15 @@ class LogController:
         self.logView.main()
 
     def login(self, logModel: LoginModel):
-        print(logModel.getPassword())
-        if logModel.getLogin() == 'sow' and logModel.getPassword() == 'sow':
+        auth = self.userService.authenticate(username=logModel.getLogin(), password=logModel.getPassword())
+        if auth == 1:
             print('Login success')
             self.logView.quit()
             userControl = UserManagerController()
             userControl.main()
         else:
-            print("failed")
+            print("login failed")
+            messagebox.showinfo("Failed", "Invalid username or password ", parent=self.logView.win)
 
 ################## CLASS USER MANAGER CONTROLLER ##################
 class UserManagerController:
@@ -41,9 +45,13 @@ class UserManagerController:
         if radio == 1:
             user = self.userService.getUserById(value)
             print(user.getNom())
+            self.userView.set_entries(user)
+            self.userView.tree.selection_remove(self.userView.tree.selection())
         elif radio == 2:
             user = self.userService.getUserByEmail(value)
             print(user.getNom())
+            self.userView.set_entries(user)
+            self.userView.tree.selection_remove(self.userView.tree.selection())
 
     def addUser(self, userModel: UserModel):
         response = self.userService.addUser(userModel)
@@ -68,7 +76,7 @@ class UserManagerController:
 
 
 if __name__ == '__main__':
-    # logController = LogController()
-    # logController.main()
-    userController = UserManagerController()
-    userController.main()
+    logController = LogController()
+    logController.main()
+    # userController = UserManagerController()
+    # userController.main()

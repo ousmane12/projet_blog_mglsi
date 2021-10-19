@@ -107,9 +107,9 @@ class UserView:
 
     def create_view(self):
         # self.create_notebook()
-        addLab = ttk.Label(self.win, text='Gestion des Utilisateur', font=('Arial', 25),
+        mainLab = ttk.Label(self.win, text='Gestion des Utilisateur', font=('Arial', 25),
                            background="#28527a", foreground='white')
-        addLab.grid(row=0, column=0, padx=400, pady=5)
+        mainLab.grid(row=0, column=0, padx=400, pady=5)
 
         self.draw_manageFrame()
         self.draw_treeView()
@@ -142,10 +142,12 @@ class UserView:
         self.create_button(self.manageFrame, name='SUPPRIMER', x=270, y=300, command=self.delete)
 
     def draw_treeView(self):
+        # delete all previous rows in treeview
+        # for row in self.tree.get_children():
+        #     self.tree.delete(row)
+
         users = self.userController.getUsers()
         user = users[0].__dict__
-        for i in self.tree.get_children():
-            self.tree.delete(i)
         columns = ()
         # definition des identificateurs
         for col in user.keys():
@@ -178,21 +180,28 @@ class UserView:
     # bind the select event
     def on_tree_select(self, event):
         item = self.tree.selection()[0]
+        id = self.tree.item(item, 'values')[0]
+        nom = self.tree.item(item, 'values')[1]
+        prenom = self.tree.item(item, 'values')[2]
+        mail = self.tree.item(item, 'values')[3]
+        role = self.tree.item(item, 'values')[4]
+        username = self.tree.item(item, 'values')[5]
+        password = self.tree.item(item, 'values')[6]
+        user = UserModel(id=id, nom=nom, prenom=prenom,mail=mail,role=role, username=username,password=password)
+        self.set_entries(user)
 
-        self.set_entries(item)
-
-    def set_entries(self, item):
+    def set_entries(self, user):
         # vider les zones de saisie
         self.clear_entries()
         self.entries['ID'].configure(state='normal')
-        self.entries['ID'].insert(0, self.tree.item(item, 'values')[0])
+        self.entries['ID'].insert(0, user.getId())
         self.entries['ID'].configure(state='disabled')
-        self.entries['Nom'].insert(0, self.tree.item(item, 'values')[1])
-        self.entries['Prenom'].insert(0, self.tree.item(item, 'values')[2])
-        self.entries['Mail'].insert(0, self.tree.item(item, 'values')[3])
-        self.entries['Role'].insert(0, self.tree.item(item, 'values')[4])
-        self.entries['Username'].insert(0, self.tree.item(item, 'values')[5])
-        self.entries['Password'].insert(0, self.tree.item(item, 'values')[6])
+        self.entries['Nom'].insert(0, user.getNom())
+        self.entries['Prenom'].insert(0, user.getPrenom())
+        self.entries['Mail'].insert(0, user.getMail())
+        self.entries['Role'].insert(0, user.getRole())
+        self.entries['Username'].insert(0, user.getUsername())
+        self.entries['Password'].insert(0, user.getPassword())
 
     # fonction vider toutes les zones de saisie
     def clear_entries(self):
@@ -222,9 +231,9 @@ class UserView:
         self.entries['search'].place(x= 40, y= 20)
 
         self.RadioButton['id'] = tk.Radiobutton(searchFrame, text='Id', bg="#2a5a84",
-                                                fg="black", variable=self.radioVar, value=1, command=self.chBListener)
+                                                fg="black", variable=self.radioVar, value=1)
         self.RadioButton['mail'] = tk.Radiobutton(searchFrame, text='Mail', bg="#2a5a84",
-                                                  fg="black", variable=self.radioVar, value=2, command=self.chBListener)
+                                                  fg="black", variable=self.radioVar, value=2)
         # selectionee le bouton mail par defaut
         self.RadioButton['mail'].select()
 
@@ -239,9 +248,6 @@ class UserView:
         radio = self.radioVar.get()
         search_input= self.entries['search'].get()
         self.userController.searchUser(radio, search_input)
-
-    def chBListener(self):
-        pass
 
     def quit(self):
         self.win.destroy()
