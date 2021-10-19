@@ -93,7 +93,6 @@
             ' . $this->table . ' p 
             LEFT JOIN categorie c on p.categorie = c.id
             WHERE 
-
              p.id = '.$id.'
             LIMIT 0,1';
 

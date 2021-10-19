@@ -25,7 +25,7 @@
                     <xsd:element name="username" type="xsd:string"/>
                     <xsd:element name="password" type="xsd:string"/>
                     <xsd:element name="email" type="xsd:string"/>
-                    <!-- <xsd:element name="token" type="xsd:string"/> -->
+                    <xsd:element name="token" type="xsd:string"/>
                     <xsd:element name="role" type="xsd:string"/>
                 </xsd:all>
             </xsd:complexType>
@@ -99,7 +99,7 @@
         <part name="password" type="xsd:string" />
     </message>
     <message name="authenticateUserResponse">
-        <part name="return" type="tns:User" />
+        <part name="return" type="xsd:int" />
     </message>
 
     <portType name="serviceUsersManagerPortType">

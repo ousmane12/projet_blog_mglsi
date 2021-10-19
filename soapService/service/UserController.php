@@ -94,10 +94,10 @@ class UserController{
         $bdd->connect();
         $id = (int) $id;
 
-        $request = $bdd->query('SELECT * FROM User WHERE id = '.$id);
+        $request = $bdd->query('SELECT * FROM User WHERE id = "'.$id.'"');
         $data = $request->fetch(PDO::FETCH_ASSOC);
 
-        $user = ($data === false) ? null : $data;
+        $user = ($data === false) ? null : ($data);
         return $user;
     }
 
@@ -124,32 +124,58 @@ class UserController{
         $bdd->connect();
 
         $id = (int) $id;
-        $request = $bdd ->prepare('UPDATE user SET nom = :nom, prenom = :prenom, username =:username,
-                         email = :email, password =:password, role =:role WHERE id = :id');
 
-        return $request->execute([
-            'nom'    => $nom,
-            'prenom' => $prenom,
-            'username'   => $username,
-            'email'   => $email,
-            'password'   => md5(sha1(str_rot13($password))),
-            'role' => $role,
+        $req_get_pass = $bdd->prepare('SELECT password FROM user WHERE id = :id');
+
+        $req_get_pass->execute([
             'id' => $id
         ]);
+
+        if($req_get_pass == md5(sha1(str_rot13($password)))){
+            $request = $bdd ->prepare('UPDATE user SET nom = :nom, prenom = :prenom, username =:username,
+            email = :email, role =:role WHERE id = :id');
+
+            return $request->execute([
+                'nom'    => $nom,
+                'prenom' => $prenom,
+                'username'   => $username,
+                'email'   => $email,
+                'role' => $role,
+                'id' => $id
+            ]);     
+        }else{
+            $request = $bdd ->prepare('UPDATE user SET nom = :nom, prenom = :prenom, username =:username,
+            email = :email,  password =:password, role =:role WHERE id = :id');
+
+            return $request->execute([
+                'nom'    => $nom,
+                'prenom' => $prenom,
+                'username'   => $username,
+                'email'   => $email,
+                'password'   => md5(sha1(str_rot13($password))),
+                'role' => $role,
+                'id' => $id
+            ]);
+        }
+        
     }
 
+    /**
+     * AUTHENTIFy user
+     */
     public function authenticateUser($useranme, $password)
     {
         $bdd = new Database('localhost','3306', 'glsi_blog', 'root', '');
         $bdd->connect();
-
-        $request = $bdd->prepare('SELECT * FROM user WHERE username = :username and password = :password');
+        $role = 'admin';
+        $request = $bdd->prepare('SELECT * FROM user WHERE username = :username and password = :password and role = :role');
         $request->execute([
             'username' => $useranme,
-            'password'   => md5(sha1(str_rot13($password)))
+            'password'   => md5(sha1(str_rot13($password))),
+            'role' => $role
         ]);
         
-        return new User($request->fetch(PDO::FETCH_ASSOC));
+        return count($request->fetchAll());
     }
 
 
