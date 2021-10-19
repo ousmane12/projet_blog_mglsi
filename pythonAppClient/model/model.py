@@ -27,7 +27,7 @@ class LoginModel:
         self._password = passwd
 class UserModel:
 
-    def __init__(self, id, nom, prenom, mail, role,username, password,token=""):
+    def __init__(self, id, nom, prenom, mail, role,username, password):
         self._id = id
         self._nom = nom
         self._prenom = prenom
@@ -35,7 +35,6 @@ class UserModel:
         self._role = role
         self._username = username
         self._password = password
-        self._token = token
 
     # Getters
     def getId(self):
@@ -52,8 +51,6 @@ class UserModel:
         return self._username
     def getPassword(self):
         return self._password
-    def getToken(self):
-        return self._token
 
     # Setters
     def setNom(self,nom):
@@ -68,5 +65,3 @@ class UserModel:
         self._username = username
     def setPassword(self,password):
         self._password = password
-    def setToken(self,token):
-        self._token = token

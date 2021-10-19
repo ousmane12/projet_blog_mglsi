@@ -137,9 +137,6 @@ class UserView:
         self.create_entry(
             self.manageFrame, "Password", x=5, y=350, textvar=tk.StringVar(), state='enabled'
         )
-        self.create_entry(
-            self.manageFrame, "Token", x=5, y=390, textvar=tk.StringVar(), state='enabled'
-        )
         self.create_button(self.manageFrame, name='AJOUTER', x=270, y=180, command=self.add)
         self.create_button(self.manageFrame, name='MODIFIER', x=270, y=240, command=self.update)
         self.create_button(self.manageFrame, name='SUPPRIMER', x=270, y=300, command=self.delete)
@@ -147,15 +144,15 @@ class UserView:
     def draw_treeView(self):
         users = self.userController.getUsers()
         user = users[0].__dict__
+        for i in self.tree.get_children():
+            self.tree.delete(i)
         columns = ()
         # definition des identificateurs
         for col in user.keys():
             columns += (col,)
         self.tree = ttk.Treeview(self.treeFrame, columns=columns, show='headings')
         for col in user.keys():
-            print(col[1:])
             self.tree.heading(col, text=col[1:])
-        print(columns)
         # definir la taille des columns
         self.tree.column('_id', minwidth=0, width=25)
         self.tree.column('_nom', minwidth=0, width=100)
@@ -164,7 +161,6 @@ class UserView:
         self.tree.column('_role', minwidth=0, width=50)
         self.tree.column('_username', minwidth=0, width=150)
         self.tree.column('_password', minwidth=0, width=160)
-        self.tree.column('_token', minwidth=0, width=100)
 
         # generate tuple of users
         usrs = []
@@ -172,7 +168,7 @@ class UserView:
             dic = user.__dict__
             usrs.append(
                 (f'{dic["_id"]}', f'{dic["_nom"]}', f'{dic["_prenom"]}', f'{dic["_mail"]}',
-                 f'{dic["_role"]}', f'{dic["_username"]}', f'{dic["_password"]}', f'{dic["_token"]}'))
+                 f'{dic["_role"]}', f'{dic["_username"]}', f'{dic["_password"]}'))
 
         for user in usrs:
             self.tree.insert('', tk.END, values=user)
@@ -182,6 +178,7 @@ class UserView:
     # bind the select event
     def on_tree_select(self, event):
         item = self.tree.selection()[0]
+
         self.set_entries(item)
 
     def set_entries(self, item):
@@ -196,7 +193,6 @@ class UserView:
         self.entries['Role'].insert(0, self.tree.item(item, 'values')[4])
         self.entries['Username'].insert(0, self.tree.item(item, 'values')[5])
         self.entries['Password'].insert(0, self.tree.item(item, 'values')[6])
-        self.entries['Token'].insert(0, self.tree.item(item, 'values')[7])
 
     # fonction vider toutes les zones de saisie
     def clear_entries(self):
@@ -209,7 +205,6 @@ class UserView:
         self.entries['Role'].delete(0, tk.END)
         self.entries['Username'].delete(0, tk.END)
         self.entries['Password'].delete(0, tk.END)
-        self.entries['Token'].delete(0, tk.END)
 
     # Creer une zone de saisie
     def create_entry(self, frame, label, x, y, textvar, state):
@@ -230,18 +225,21 @@ class UserView:
                                                 fg="black", variable=self.radioVar, value=1, command=self.chBListener)
         self.RadioButton['mail'] = tk.Radiobutton(searchFrame, text='Mail', bg="#2a5a84",
                                                   fg="black", variable=self.radioVar, value=2, command=self.chBListener)
-        # selectionee le bouton id
-        self.RadioButton['id'].select()
+        # selectionee le bouton mail par defaut
+        self.RadioButton['mail'].select()
 
-        self.RadioButton['id'].place(x=100, y=50)
-        self.RadioButton['mail'].place(x=150, y=50)
+        self.RadioButton['id'].place(x=150, y=50)
+        self.RadioButton['mail'].place(x=100, y=50)
 
         self.buttons['search'] = tk.Button(searchFrame, width=5, height=1, bg='#21486b', fg='white', command=self.search)
         self.buttons['search']["text"] = 'Search'
         self.buttons['search'].place(x= 280, y=20)
 
     def search(self):
-        print(self.radioVar.get())
+        radio = self.radioVar.get()
+        search_input= self.entries['search'].get()
+        self.userController.searchUser(radio, search_input)
+
     def chBListener(self):
         pass
 
@@ -265,18 +263,19 @@ class UserView:
         nom = self.entries['Nom'].get()
         prenom = self.entries['Prenom'].get()
         mail = self.entries['Mail'].get()
-        statut = self.entries['Statut'].get()
-        userModel = UserModel(id, nom, prenom, mail, statut)
-        # print(f"Login: {self.logModel.getLogin()}")
-        # print(f"Passwd: {self.logModel.getPassword()}")
+        role = self.entries['Role'].get()
+        username = self.entries['Username'].get()
+        password = self.entries['Password'].get()
+        userModel = UserModel(id, nom, prenom, mail, role, username, password)
         return userModel
 
     # appeler la fontion addUser de userManagerController
     def add(self):
-        self.userController.addUser(self.getUserInput())
+        response = self.userController.addUser(self.getUserInput())
+
 
     def delete(self):
-        self.userController.deleteUser(self.getUserInput())
+        self.userController.deleteUser(self.getUserInput().getId())
 
     def update(self):
         self.userController.updateUser(self.getUserInput())

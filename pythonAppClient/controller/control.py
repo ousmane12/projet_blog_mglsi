@@ -1,11 +1,9 @@
 from zeep import Client
 
 from pythonAppClient.model.model import LoginModel, UserModel
+from pythonAppClient.service.userService import UserService
 from pythonAppClient.view.view import LogView, UserView
 
-# client = Client('http://localhost/projet_blog_mglsi/soapService/service/UserController.php?wsdl')
-# result = client.service.getAllUserList()
-# print(result)
 
 ################## CLASS LOGIN CONTROLLER ##################
 class LogController:
@@ -28,35 +26,45 @@ class LogController:
 
 ################## CLASS USER MANAGER CONTROLLER ##################
 class UserManagerController:
-
+    userService = UserService()
     def __init__(self):
-        self.userModel = UserModel(id="", nom="", prenom="", mail="", role="", username="", password="", token="")
+        self.userModel = UserModel(id="", nom="", prenom="", mail="", role="", username="", password="")
         self.userView = UserView(self)
 
     def main(self):
         self.userView.main()
 
     def getUsers(self):
-        users = []
-        user1 = UserModel(id=1, nom='sow', prenom='ousmane', mail='sow@gmail.com', role='admin', username='username', password='dlsfksejod', token='tokemns,.msfsfd')
-        user2 = UserModel(id=2, nom='barry', prenom='hams', mail='barry@gmail.com', role='editeur', username='', password='', token='')
-        user3 = UserModel(id=3, nom='mbaye', prenom='ababacar', mail='mbaye@gmail.com', role='editeur', username='', password='', token='')
-        users.append(user1)
-        users.append(user2)
-        users.append(user3)
+        users = self.userService.getAllUsers()
         return users
+    def searchUser(self, radio, value):
+        if radio == 1:
+            user = self.userService.getUserById(value)
+            print(user.getNom())
+        elif radio == 2:
+            user = self.userService.getUserByEmail(value)
+            print(user.getNom())
 
     def addUser(self, userModel: UserModel):
-        print("Add")
-        print(f'From User controller: {userModel.getNom()}')
+        response = self.userService.addUser(userModel)
+        print(response)
+        if response == '1':
+            self.userView.clear_entries()
+            self.userView.draw_treeView()
 
     def updateUser(self, userModel: UserModel):
-        print("Update")
-        print(f'From User controller: {userModel.getNom()}')
+        response = self.userService.updateUser(userModel)
+        print(response)
+        if response == '1':
+            self.userView.clear_entries()
+            self.userView.draw_treeView()
 
-    def deleteUser(self, userModel: UserModel):
-        print("Delete")
-        print(f'From User controller: {userModel.getNom()}')
+    def deleteUser(self, id):
+        response = self.userService.deleteUser(id)
+        print(response)
+        if response == '1':
+            self.userView.clear_entries()
+            self.userView.draw_treeView()
 
 
 if __name__ == '__main__':

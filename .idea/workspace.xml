@@ -5,7 +5,9 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pythonAppClient/controller/control.py" beforeDir="false" afterPath="$PROJECT_DIR$/pythonAppClient/controller/control.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pythonAppClient/model/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/pythonAppClient/model/model.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pythonAppClient/service/userManager.py" beforeDir="false" afterPath="$PROJECT_DIR$/pythonAppClient/service/userService.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pythonAppClient/view/view.py" beforeDir="false" afterPath="$PROJECT_DIR$/pythonAppClient/view/view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/soapService/Persistance/wsdl/user.wsdl" beforeDir="false" afterPath="$PROJECT_DIR$/soapService/Persistance/wsdl/user.wsdl" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,6 +39,7 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
+    <property name="restartRequiresConfirmation" value="false" />
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RunManager">
