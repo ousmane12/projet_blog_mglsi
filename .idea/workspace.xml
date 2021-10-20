@@ -6,6 +6,7 @@
       <change beforePath="$PROJECT_DIR$/pythonAppClient/controller/control.py" beforeDir="false" afterPath="$PROJECT_DIR$/pythonAppClient/controller/control.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pythonAppClient/service/userService.py" beforeDir="false" afterPath="$PROJECT_DIR$/pythonAppClient/service/userService.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pythonAppClient/view/view.py" beforeDir="false" afterPath="$PROJECT_DIR$/pythonAppClient/view/view.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/soapService/Persistance/wsdl/user.wsdl" beforeDir="false" afterPath="$PROJECT_DIR$/soapService/Persistance/wsdl/user.wsdl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/soapService/service/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/soapService/service/UserController.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

@@ -25,8 +25,8 @@ class UserService:
         return userList
 
     def addUser(self, user:UserModel):
-        responce = self.client.service.addUser(user.getNom(), user.getPrenom(), user.getUsername(), user.getPassword(), user.getMail(), user.getRole())
-        return responce
+        response = self.client.service.addUser(user.getNom(), user.getPrenom(), user.getUsername(), user.getPassword(), user.getMail(), user.getRole())
+        return response
 
     def authenticate(self, username, password):
         auth = self.client.service.authenticateUser(username,password)

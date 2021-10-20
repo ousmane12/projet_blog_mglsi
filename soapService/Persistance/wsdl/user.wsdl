@@ -70,7 +70,7 @@
         <part name="role" type="xsd:string" />
     </message>
     <message name="addUserInfoResponse">
-        <part name="return" type="tns:User" />
+        <part name="return" type="xsd:int" />
     </message>
 
     <message name="removeUserRequest">

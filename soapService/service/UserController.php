@@ -25,19 +25,23 @@ class UserController{
          
          $token = $this->generateRandomString();
  
+      try{
+            $request = $bdd->prepare('INSERT INTO user (nom, prenom,
+            email,username, password,role, token) VALUES(:nom, :prenom, :email,:username, :password, :role, :token)');
 
-        $request = $bdd->prepare('INSERT INTO user (nom, prenom,
-        email,username, password,role, token) VALUES(:nom, :prenom, :email,:username, :password, :role, :token)');
-
-        return $request->execute([
-            'nom'    => $nom,
-            'prenom' => $prenom,
-            'email'   => $email,
-            'username'   => $username,
-            'password'   => md5(sha1(str_rot13($password))),
-            'role' => $role,
-            'token' => $token
-        ]);
+            $request->execute([
+                'nom'    => $nom,
+                'prenom' => $prenom,
+                'email'   => $email,
+                'username'   => $username,
+                'password'   => md5(sha1(str_rot13($password))),
+                'role' => $role,
+                'token' => $token
+            ]);
+            return 1;
+       }catch(exception $e) {
+         return $e;
+       }
     }
 
     /**
@@ -114,6 +118,17 @@ class UserController{
         $user = ($data === false) ? null : $data;
         return $user;
     }
+
+    public function getUserPassword($id)
+    {
+        $bdd = new Database('localhost','3306', 'glsi_blog', 'root', '');
+        $bdd->connect();
+        $request = $bdd->query('SELECT password FROM user WHERE id =  '.$id);
+        $data = $request->fetch(PDO::FETCH_ASSOC);
+
+        $user = ($data === false) ? null : $data;
+        return $user['password'];
+    }
     /**
      * update user info
      */
@@ -124,32 +139,25 @@ class UserController{
         $bdd->connect();
 
         $id = (int) $id;
-
-        $req_get_pass = $bdd->prepare('SELECT password FROM user WHERE id = :id');
-
-        $req_get_pass->execute([
-            'id' => $id
-        ]);
-        unset($this->PDOStatement);
-        $hashed_password = $req_get_pass->fetch(PDO::FETCH_ASSOC);
-        if(password_verify($password, $hashed_password)){
+        $req_get_pass = $this->getUserPassword($id);
+        if($req_get_pass == md5(sha1(str_rot13($password))) || $req_get_pass == $password ){
             $request = $bdd ->prepare('UPDATE user SET nom = :nom, prenom = :prenom, username =:username,
-            email = :email,password =:password, role =:role WHERE id = :id');
+            email = :email, role =:role WHERE id = :id');
 
             return $request->execute([
                 'nom'    => $nom,
                 'prenom' => $prenom,
                 'username'   => $username,
                 'email'   => $email,
-                'password'   => $hashed_password,
                 'role' => $role,
                 'id' => $id
-            ]);     
+            ]);
+
         }else{
             $request = $bdd ->prepare('UPDATE user SET nom = :nom, prenom = :prenom, username =:username,
             email = :email,  password =:password, role =:role WHERE id = :id');
 
-            return $request->execute([
+             return $request->execute([
                 'nom'    => $nom,
                 'prenom' => $prenom,
                 'username'   => $username,

@@ -56,7 +56,8 @@ class UserManagerController:
     def addUser(self, userModel: UserModel):
         response = self.userService.addUser(userModel)
         print(response)
-        if response == '1':
+        if response == 1:
+            messagebox.showinfo("Success", "User added successfully", parent=self.userView.win)
             self.userView.clear_entries()
             self.userView.draw_treeView()
 
@@ -64,15 +65,21 @@ class UserManagerController:
         response = self.userService.updateUser(userModel)
         print(response)
         if response == '1':
+            messagebox.showinfo("Success", "User updated successfully ", parent=self.userView.win)
             self.userView.clear_entries()
             self.userView.draw_treeView()
 
     def deleteUser(self, id):
-        response = self.userService.deleteUser(id)
-        print(response)
-        if response == '1':
-            self.userView.clear_entries()
-            self.userView.draw_treeView()
+        result = messagebox.askquestion("Supprimer", "Etes vous sure de supprimer cet utilisateur?", icon='warning')
+        if result == 'yes':
+            response = self.userService.deleteUser(id)
+            print(response)
+            if response == '1':
+                messagebox.showinfo("Success", "User deleted successfully ", parent=self.userView.win)
+                self.userView.clear_entries()
+                self.userView.draw_treeView()
+        else:
+            print("no")
 
 
 if __name__ == '__main__':

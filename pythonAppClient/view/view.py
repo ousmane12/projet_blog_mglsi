@@ -9,6 +9,14 @@ class LogView:
     def __init__(self, logController):
         self.win = tk.Tk()
         self.win.title('BLOG MGLSI ADMIN 1.0')
+        self.width = 340
+        self.height = 180
+        screen_width = self.win.winfo_screenwidth()
+        screen_height = self.win.winfo_screenheight()
+        x_cordinate = int((screen_width / 2) - (self.width / 2))
+        y_cordinate = int((screen_height / 2) - (self.height / 2))
+        self.win.geometry(f'{self.width}x{self.height}+{x_cordinate}+{y_cordinate}')
+
         self.entries = {}
         self.buttons = {}
         self.labels = {}
@@ -83,7 +91,11 @@ class UserView:
         self.win.title('BLOG MGLSI ADMIN BOARD 1.0')
         self.width = 1080
         self.height = 650
-        self.win.geometry(f'{self.width}x{self.height}')
+        screen_width = self.win.winfo_screenwidth()
+        screen_height = self.win.winfo_screenheight()
+        x_cordinate = int((screen_width / 2) - (self.width / 2))
+        y_cordinate = int((screen_height / 2) - (self.height / 2))
+        self.win.geometry(f'{self.width}x{self.height}+{x_cordinate}+{y_cordinate}')
         self.win.resizable(False, False)
         self.win.config(background='#28527a')
 
