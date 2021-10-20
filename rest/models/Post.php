@@ -17,10 +17,6 @@
         //DB variables
         private $conn; 
         private $table = 'article';
-<<<<<<< HEAD
-        public $format;
-=======
->>>>>>> 856a1dc3372517b8d4128e9959ad2befbccf984d
 
 
         public $format;
@@ -78,8 +74,6 @@
         }
 
         //get single post
-<<<<<<< HEAD
-=======
          /**  @OA\Get(
             *     path="/public/index?action={article}&{id}&{type}", tags ={"public"}
             *     @OA\Response(response="200", description="success")
@@ -87,7 +81,6 @@
             *     @OA\Info (lis un article selon son id)
             * )
             */
->>>>>>> 856a1dc3372517b8d4128e9959ad2befbccf984d
         public function read_single($id){
             $query = 'SELECT c.libelle as category_name,
             p.id,
@@ -100,22 +93,13 @@
             ' . $this->table . ' p 
             LEFT JOIN categorie c on p.categorie = c.id
             WHERE 
-<<<<<<< HEAD
-=======
-
->>>>>>> 856a1dc3372517b8d4128e9959ad2befbccf984d
              p.id = '.$id.'
             LIMIT 0,1';
 
              //prepare statement 
              $stmt = $this->conn->prepare($query);
 
-<<<<<<< HEAD
-             //BIND the ID
-             //$stmt->bindParam(1, $this->id);
-=======
              
->>>>>>> 856a1dc3372517b8d4128e9959ad2befbccf984d
              //Execute it 
              $stmt->execute();
              $row = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -156,8 +140,6 @@
              return $stmt;
         
         }
-<<<<<<< HEAD
-=======
 
         /**  @OA\Get(
             *     path="/public/index?action=articlesByCategory&type={type:xml/json}", tags ={"article"}
@@ -166,7 +148,6 @@
             *     @OA\Info read all articles grouping them by their category
             * )
             */
->>>>>>> 856a1dc3372517b8d4128e9959ad2befbccf984d
         //read by category using all categories
         public function regroupCategories()
         {
@@ -201,52 +182,5 @@
             return $this->categories;
            
         }
-<<<<<<< HEAD
-
-        public function xml_encode($mixed, $domElement=null, $DOMDocument=null) {
-            if (is_null($DOMDocument)) {
-                $DOMDocument =new DOMDocument;
-                $DOMDocument->formatOutput = true;
-                $this->xml_encode($mixed, $DOMDocument, $DOMDocument);
-                echo $DOMDocument->saveXML();
-            }
-            else {
-                if (is_array($mixed)) {
-                    foreach ($mixed as $index => $mixedElement) {
-                        if (is_int($index)) {
-                            if ($index === 0) {
-                                $node = $domElement;
-                            }
-                            else {
-                                $node = $DOMDocument->createElement($domElement->tagName);
-                                $domElement->parentNode->appendChild($node);
-                            }
-                        }
-                        else {
-                            $plural = $DOMDocument->createElement($index);
-                            $domElement->appendChild($plural);
-                            $node = $plural;
-                            if (!(rtrim($index, 's') === $index)) {
-                                $singular = $DOMDocument->createElement(rtrim($index, 's'));
-                                $plural->appendChild($singular);
-                                $node = $singular;
-                            }
-                        }
-         
-                        $this->xml_encode($mixedElement, $node, $DOMDocument);
-                    }
-                }
-                else {
-                    $domElement->appendChild($DOMDocument->createTextNode($mixed));
-                }
-            }
-        }
-
-        
     }
-
-
-=======
-    }
->>>>>>> 856a1dc3372517b8d4128e9959ad2befbccf984d
     
