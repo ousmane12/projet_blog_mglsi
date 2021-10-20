@@ -114,6 +114,17 @@ class UserController{
         $user = ($data === false) ? null : $data;
         return $user;
     }
+
+    public function getUserPassword($id)
+    {
+        $bdd = new Database('localhost','3306', 'glsi_blog', 'root', '');
+        $bdd->connect();
+        $request = $bdd->query('SELECT password FROM user WHERE id =  '.$id);
+        $data = $request->fetch(PDO::FETCH_ASSOC);
+
+        $user = ($data === false) ? null : $data;
+        return $user;
+    }
     /**
      * update user info
      */
@@ -124,14 +135,9 @@ class UserController{
         $bdd->connect();
 
         $id = (int) $id;
+        $req_get_pass = $this->getUserPassword($id);
 
-        $req_get_pass = $bdd->prepare('SELECT password FROM user WHERE id = :id');
-
-        $req_get_pass->execute([
-            'id' => $id
-        ]);
-
-        if($req_get_pass == md5(sha1(str_rot13($password)))){
+        if($req_get_pass === md5(sha1(str_rot13($password)))){
             $request = $bdd ->prepare('UPDATE user SET nom = :nom, prenom = :prenom, username =:username,
             email = :email,password =:password, role =:role WHERE id = :id');
 
