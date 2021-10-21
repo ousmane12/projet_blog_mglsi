@@ -10,10 +10,12 @@ Ensuite installer [zeep](https://pypi.org/project/zeep/) via pip.
 pip install zeep
 ```
 ## Lien video youtube explicative
---lien
+
+- https://youtu.be/yzlKguMLwHI
+
 ## Utilisation
 
-De prime abord il faut creer des utilisateurs via l'application client qui utilise le service soap pour
+De prime abord il faut creer des utilisateurs afin de pouvoir publier des articles via l'application client qui utilise le service soap pour
 ajouter, modifier et/ou supprimer des utilisateurs puis les donner un role. Les roles retenus ici sont:
 - les editeurs (editeur): qui peuvent ajouter, modifier et/ou supprimer leurs articles et/ou categories
 - les administrateurs (admin) qui sont les superutilisateurs c'est a dire ils peuvent agir sur tout article et categorie
