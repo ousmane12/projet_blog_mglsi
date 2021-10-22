@@ -240,7 +240,7 @@
           
         ];
         //print_r($data);
-        $this->view('users/register', $data);
+        $this->view('users/edit', $data);
       }
 
     }

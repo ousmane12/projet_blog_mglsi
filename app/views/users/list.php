@@ -11,7 +11,6 @@
   <caption>List of users</caption>
   <thead>
     <tr>
-      <th scope="col">#</th>
       <th scope="col">Nom</th>
       <th scope="col">Email</th>
       <th scope="col">Username</th>
@@ -24,7 +23,6 @@
   <tbody>
   <?php foreach($data['users'] as $cate): ?>
     <tr>
-      <th scope="row"><?php echo $cate->id; ?></th>
       <td><?php echo $cate->nom; ?></td>
       <td><?php echo $cate->email; ?></td>
       <td><?php echo $cate->username; ?></td>

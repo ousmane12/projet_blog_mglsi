@@ -38,7 +38,7 @@
          
             <label for="token">Token: <sup>*</sup></label>
             <input type="text" name="token" class="form-control form-control-lg <?php echo (!empty($data['token_err'])) ? 'is-invalid' : ''; ?>" value="<?php echo $data['token']; ?>">
-            <br><button class="btn btn-outline-success">Generate</button>
+           
             
           </div>
 

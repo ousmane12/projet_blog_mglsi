@@ -7,7 +7,7 @@
   <div class="row">
     <div class="col-md-6 mx-auto">
       <div class="card card-body bg-light mt-5">
-        <h2>Create A User</h2>
+        <h2>Edit A User</h2>
         <p>Please fill out this form to register a user</p>
         <form action="<?php echo URLROOT; ?>/users/register" method="post">
           <div class="form-group">
@@ -44,7 +44,7 @@
 
           <div class="row">
             <div class="col">
-              <input type="submit" value="Register" class="btn btn-success btn-block">
+              <input type="submit" value="Update" class="btn btn-success btn-block">
             </div>
           </div>
         </form>
