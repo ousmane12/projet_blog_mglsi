@@ -114,7 +114,7 @@ class UserController{
         $user = ($data === false) ? null : $data;
         return $user;
     }
-
+    
     public function getUserPassword($id)
     {
         $bdd = new Database('localhost','3306', 'glsi_blog', 'root', '');
@@ -123,7 +123,7 @@ class UserController{
         $data = $request->fetch(PDO::FETCH_ASSOC);
 
         $user = ($data === false) ? null : $data;
-        return $user;
+        return $user['password'];
     }
     /**
      * update user info
@@ -138,7 +138,7 @@ class UserController{
         $req_get_pass = $this->getUserPassword($id);
         //password_verify($password, $req_get_pass)
         // password_verify($password, $req_get_pass)? $password: md5(sha1(str_rot13($password)))
-        //if($req_get_pass === md5(sha1(str_rot13($password)))){
+        if($req_get_pass === md5(sha1(str_rot13($password)))){
             $request = $bdd ->prepare('UPDATE user SET nom = :nom, prenom = :prenom, username =:username,
             email = :email,password =:password, role =:role WHERE id = :id');
 
@@ -151,20 +151,20 @@ class UserController{
                 'role' => $role,
                 'id' => $id
             ]);     
-   //     }else{
-  //          $request = $bdd ->prepare('UPDATE user SET nom = :nom, prenom = :prenom, username =:username,
-   //         email = :email,  password =:password, role =:role WHERE id = :id');
-//
-   //         return $request->execute([
-   //             'nom'    => $nom,
-   //             'prenom' => $prenom,
-   //             'username'   => $username,
-   //             'email'   => $email,
-  //              'password'   => md5(sha1(str_rot13($password))),
-  //              'role' => $role,
- //               'id' => $id
- //           ]);
- //       }
+        }else{
+            $request = $bdd ->prepare('UPDATE user SET nom = :nom, prenom = :prenom, username =:username,
+            email = :email,  password =:password, role =:role WHERE id = :id');
+
+            return $request->execute([
+                'nom'    => $nom,
+                'prenom' => $prenom,
+                'username'   => $username,
+                'email'   => $email,
+                'password'   => md5(sha1(str_rot13($password))),
+                'role' => $role,
+                'id' => $id
+            ]);
+        }
         
     }
 

@@ -94,7 +94,6 @@
           }
           public function deleteCategory($libelle){
             $this->db->query('DELETE FROM categorie WHERE libelle = "'.$libelle.'"');
-            // Bind values
             // Execute
             if($this->db->execute()){
               return true;

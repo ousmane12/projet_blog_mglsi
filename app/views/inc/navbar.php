@@ -67,8 +67,8 @@
           <li class="nav-item">
               <a class="btn btn-outline-danger" href="<?php echo URLROOT; ?>/categories/delete">Delete Category</a>
             </li>
-         
-          <?php elseif(isset($_SESSION['user_status']) == 'admin'):?>
+            <?php endif; ?>
+          <?php if(isset($_SESSION['user_id']) && isset($_SESSION['user_role']) == 'admin'):?>
             <li class="nav-item">
               <a class="btn btn-outline-info" href="<?php echo URLROOT; ?>/users/list">List Users</a>
             </li>

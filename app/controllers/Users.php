@@ -152,7 +152,8 @@
       $_SESSION['user_id'] = $user->id;
       $_SESSION['user_email'] = $user->email;
       $_SESSION['user_nom'] = $user->username;
-      $_SESSION['user_status'] = $user->role;
+      $_SESSION['user_role'] = $user->role;
+      $_SESSION['user_token'] = $user->token;
       redirect('pages');
     }
 
