@@ -1,8 +1,8 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Documentation de l'API REST de la plateforme MGLSI_NEWS",
-        "version": "0.0.1"
+        "title": "Documentation de l'API REST de la plateforme MGLSI NEWS",
+        "version": "1.0"
     },
     "servers": [
         {
@@ -355,7 +355,7 @@
             "name": "article",
             "description": "Opérations et informations disponibles sur les articles .",
             "externalDocs": {
-                "description": "Visitez le site du MGLSI_NEWS",
+                "description": "Visitez le site du MGLSI NEWS",
                 "url": "http://localhost/projet_blog_mglsi"
             }
         }
