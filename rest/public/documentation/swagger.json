@@ -154,7 +154,7 @@
                     {
                         "name": "categorie",
                         "in": "path",
-                        "description": "Permet de spécifier l'id de la catégorie dont on veut récuperer les articles.",
+                        "description": "Permet de spécifier la catégorie dont on veut récuperer les articles.",
                         "required": true,
                         "schema": {
                             "type": "string"

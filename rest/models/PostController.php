@@ -31,26 +31,45 @@
             $this->post = new Post($this->db);
             if(!isLoggedIn()){
                 print_r(array(
-                    "Error" => "Error has ocurred. You need to authenticate before using any service"
+                    "Error" => "Token not found. You need to authenticate before using any service"
                 ));
               }
               
         }
-           /**
-         * @OA\Get(
-         *     path="/public/index?action={article}&{type}", tags ={"public"}
-         *     @OA\Response(response="200", description="success")
-         *     @OA\Response(response="404", description="Error")
-         *     @OA\Info 
-         * )
-         */
-
+          
         public function getToken($id){
             $result = $this->post->readToken($id);
             return $result;
             print_r($result);
         }
         
+         /**
+     * @OA\Get(
+     *      path="/index.php?action=articles&type={type}",
+     *      tags={"article"},
+     *      @OA\Parameter(
+     *          name="type",
+     *          in="path",
+     *          description="Permet de spécifier le format de données (xml/json) que va retourner la requête,
+     *          required=true,
+     *          @OA\Schema(type="string")
+     *      ),
+     *      @OA\Response(
+     *          response="200",
+     *          description="Nos articles disponibles",
+     *          @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Article"), @OA\Xml(name="article")),
+     *          @OA\XmlContent(type="array", @OA\Xml(name="articles", wrapped=true), @OA\Items(ref="#/components/schemas/Article"))
+     *      ),
+     *      @OA\Response(
+     *          response="404",
+     *          description="Article non trouvé",
+     *          @OA\JsonContent(type="string"),
+     *          @OA\XmlContent(type="string")
+     *      )
+     * )
+     *
+     */
+
 
         
         function get($type){
@@ -111,7 +130,42 @@
     
         }
     }
-//articles by category
+
+    /**
+     * @OA\Get(
+     *      path="/index.php?action=articlescategorie&categorie={categorie}&type={type}",
+     *      tags={"article"},
+     *      @OA\Parameter(
+     *          name="type",
+     *          in="path",
+     *          description="Permet de spécifier le format de données (xml/json) que va retourner la requête.",
+     *          required=true,
+     *          @OA\Schema(type="string")
+     *      ),
+     *      @OA\Parameter(
+     *          name="categorie",
+     *          in="path",
+     *          description="Permet de spécifier la catégorie dont on veut récuperer les articles.",
+     *          required=true,
+     *          @OA\Schema(type="integer")
+     *      ),
+     *      @OA\Response(
+     *          response="200",
+     *          description="Les articles correspondant à la catégorie spécifier.",
+     *          @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Article"), @OA\Xml(name="article")),
+     *          @OA\XmlContent(type="array", @OA\Xml(name="articles", wrapped=true), @OA\Items(ref="#/components/schemas/Article"))
+     *      ),
+     *      @OA\Response(
+     *          response="404",
+     *          description="Article non trouvé",
+     *          @OA\JsonContent(type="string"),
+     *          @OA\XmlContent(type="string")
+     *      )
+     * )
+     */
+    
+     
+
         public function get_by_cat($categorie,$type){
             if(isset($_SESSION['user_id'])){
             $token = $this->getToken($_SESSION['user_id']);
@@ -165,6 +219,32 @@
         }
     }
 
+    /**
+     * @OA\Get(
+     *      path="/index.php?action=articlesByCategory&type={type}",
+     *      tags={"article"},
+     *      @OA\Parameter(
+     *          name="type",
+     *          in="path",
+     *          description="Permet de spécifier le format de données (xml/json) que va retourner la requête.",
+     *          required=true,
+     *          @OA\Schema(type="string")
+     *      ),
+     *      @OA\Response(
+     *          response="200",
+     *          description="Nos articles disponibles regroupés par catégorie.",
+     *          @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Article"), @OA\Xml(name="article")),
+     *          @OA\XmlContent(type="array", @OA\Xml(name="articles", wrapped=true), @OA\Items(ref="#/components/schemas/Article"))
+     *      ),
+     *      @OA\Response(
+     *          response="404",
+     *          description="Article non trouvé",
+     *          @OA\JsonContent(type="string"),
+     *          @OA\XmlContent(type="string")
+     *      )
+     * )
+     */
+
         public function get_all_cat($type){
             if(isset($_SESSION['user_id'])){
             $token = $this->getToken($_SESSION['user_id']);
@@ -196,7 +276,41 @@
         }
     }
 
-        public function get_by_id($id, $type){
+    /**
+     * @OA\Get(
+     *      path="/index.php?action=article&id={id}&type={type}",
+     *      tags={"article"},
+     *      @OA\Parameter(
+     *          name="type",
+     *          in="path",
+     *          description="Permet de spécifier le format de données (xml/json) que va retourner la requête,
+     *          required=true,
+     *          @OA\Schema(type="string")
+     *      ),
+     *      @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          description="Permet de spécifier l'id de la ressource.",
+     *          required=true,
+     *          @OA\Schema(type="integer")
+     *      ),
+     *      @OA\Response(
+     *          response="200",
+     *          description="Nos articles disponibles",
+     *          @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Article"), @OA\Xml(name="article")),
+     *          @OA\XmlContent(type="array", @OA\Xml(name="articles", wrapped=true), @OA\Items(ref="#/components/schemas/Article"))
+     *      ),
+     *      @OA\Response(
+     *          response="404",
+     *          description="Article non trouvé",
+     *          @OA\JsonContent(type="string"),
+     *          @OA\XmlContent(type="string")
+     *      )
+     * )
+     *
+     */
+
+    public function get_by_id($id, $type){
             if(isset($_SESSION['user_id'])){
             $token = $this->getToken($_SESSION['user_id']);
             $ch = curl_init();
