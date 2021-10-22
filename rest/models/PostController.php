@@ -40,7 +40,7 @@
         public function getToken($id){
             $result = $this->post->readToken($id);
             return $result;
-            print_r($result);
+            
         }
         
          /**

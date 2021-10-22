@@ -182,5 +182,16 @@
             return $this->categories;
            
         }
+
+        public function readToken($id){
+            $req = 'SELECT token from user where id = '.$id;
+            $stmt = $this->conn->prepare($req);
+             //Execute it 
+             $stmt->execute();
+             $row = $stmt->fetch(PDO::FETCH_ASSOC);
+             return $row;
+
+
+        }
     }
     
